@@ -50,6 +50,16 @@ export default function RecentPatients() {
     return () => controller.abort()
   }, [loadPatients])
 
+  // const openOptions = () => {
+  //   return(
+  //     <div className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-secondary/20 transition-colors">
+  //       H
+  //     </div>
+  //   )
+  // }
+  // const toggleOptions = () => {
+    
+  // }
   const myPatients = useMemo(() => {
     if (!user) return []
     const u = user as AuthUser
@@ -103,7 +113,7 @@ export default function RecentPatients() {
                 <p className="text-xs text-muted-foreground">Age: {patient.age ?? "—"}</p>
                 <p className="text-xs text-muted-foreground">{patient.createdAt ? new Date(patient.createdAt).toLocaleString() : "—"}</p>
               </div>
-              <Button variant="ghost" size="sm">
+              <Button  variant="ghost" size="sm">
                 <MoreVertical className="w-4 h-4" />
               </Button>
             </div>

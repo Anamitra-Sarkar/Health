@@ -28,7 +28,8 @@ export function Signup() {
     let mounted = true
     async function loadOrgs() {
       try {
-        const res = await fetch('/api/organizations')
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/organizations`)
+        console.log("organization",res);
         if (!res.ok) return
         const data = await res.json()
         if (mounted && Array.isArray(data.organizations)) setOrgOptions(data.organizations)
