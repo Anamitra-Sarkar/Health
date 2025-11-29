@@ -260,7 +260,7 @@ export default function EMRDashboard() {
                 <button className="px-3 py-2 rounded-md border border-border bg-card" onClick={() => { setShowAllPatients(s => !s) }}>{showAllPatients ? 'Hide table' : 'Show table'}</button>
               </div>
             </div>
-            <NewPatientModal open={open} onClose={() => setOpen(false)} orgId={orgId} onCreated={async (id) => { await loadOrgData(); setShowAllPatients(true) }} />
+            <NewPatientModal open={open} onClose={() => setOpen(false)} orgId={orgId} onCreated={async () => { await loadOrgData(); setShowAllPatients(true) }} />
             <div id="org-patients-table" className={`overflow-auto ${showAllPatients ? 'block' : 'hidden'}`}>
               <table className="w-full text-sm">
                 <thead>
