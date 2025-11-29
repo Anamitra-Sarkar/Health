@@ -75,7 +75,6 @@ export default function ReportsPage() {
 
   useEffect(() => {
     if (!orgId) return
-    let active = true
     setLoading(true)
     ;(async () => {
       try {
@@ -84,7 +83,6 @@ export default function ReportsPage() {
         console.error('load org reports error', err)
       }
     })()
-    return () => { active = false }
   }, [orgId, authFetch])
 
   if (!orgId) return <div className="p-6 text-sm text-muted-foreground">No organization selected.</div>
