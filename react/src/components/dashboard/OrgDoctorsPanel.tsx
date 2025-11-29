@@ -35,55 +35,7 @@ type Doctor = {
 export default function OrgDoctorsPanel({ orgId }: { orgId: string | null }) {
   const { authFetch } = useAuth()
   // Helper: create a nicely styled drag preview element and attach to document body
-  function createDragPreview(name?: string, meta?: string) {
-    const box = document.createElement('div')
-    box.style.position = 'absolute'
-    box.style.top = '-9999px'
-    box.style.left = '-9999px'
-    box.style.zIndex = '999999'
-    box.style.padding = '8px 12px'
-    box.style.borderRadius = '8px'
-    box.style.boxShadow = '0 6px 18px rgba(0,0,0,0.18)'
-    box.style.background = 'linear-gradient(180deg, #ffffff, #fbfbfb)'
-    box.style.color = '#111827'
-    box.style.fontFamily = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial'
-    box.style.border = '1px solid rgba(15,23,42,0.06)'
-    box.style.display = 'flex'
-    box.style.alignItems = 'center'
-    box.style.gap = '10px'
-
-    const avatar = document.createElement('div')
-    avatar.style.width = '40px'
-    avatar.style.height = '40px'
-    avatar.style.borderRadius = '8px'
-    avatar.style.background = 'linear-gradient(135deg,#eef2ff,#e6f0ff)'
-    avatar.style.display = 'flex'
-    avatar.style.alignItems = 'center'
-    avatar.style.justifyContent = 'center'
-    avatar.style.fontWeight = '600'
-    avatar.style.color = '#4338ca'
-    avatar.textContent = (name || '').slice(0,2).toUpperCase()
-
-    const text = document.createElement('div')
-    text.style.display = 'flex'
-    text.style.flexDirection = 'column'
-    text.style.minWidth = '120px'
-    const title = document.createElement('div')
-    title.style.fontSize = '13px'
-    title.style.fontWeight = '600'
-    title.textContent = name || 'Patient'
-    const sub = document.createElement('div')
-    sub.style.fontSize = '12px'
-    sub.style.color = '#6b7280'
-    sub.textContent = meta || ''
-
-    text.appendChild(title)
-    text.appendChild(sub)
-    box.appendChild(avatar)
-    box.appendChild(text)
-    document.body.appendChild(box)
-    return box
-  }
+  
   const [doctors, setDoctors] = useState<Doctor[]>([])
   const [loading, setLoading] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
