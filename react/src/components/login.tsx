@@ -262,7 +262,7 @@ export function Login() {
 									</Button>
 								</div>
 
-								<div className="mt-2 text-center">
+								<div className="mt-2 text-center flex flex-col items-center">
 									<div ref={googleButtonRef} />
 									<div className="text-xs text-muted-foreground mt-2">Sign in with Google. A PIN will be required.</div>
 								</div>
