@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth"
 
 type Patient = { id: string; name?: string; createdBy?: string }
 
-export default function AddDiagnosisModal({ open, onClose, onAdded, onRequestNewPatient }: { open: boolean; onClose: () => void; onAdded?: () => void; onRequestNewPatient?: () => void }) {
+export default function AddDiagnosisModal({ open, onClose, onAdded }: { open: boolean; onClose: () => void; onAdded?: () => void; onRequestNewPatient?: () => void }) {
   const { authFetch, user } = useAuth()
   const [patients, setPatients] = useState<Patient[]>([])
   const [selected, setSelected] = useState<string | null>(null)
