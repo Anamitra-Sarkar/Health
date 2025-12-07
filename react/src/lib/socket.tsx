@@ -25,7 +25,7 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
 
     // Connect to Socket.IO server with authentication
     // For Socket.IO, we need to use the actual backend server, not the API proxy
-    const BACKEND_URL = 'http://localhost:4000'
+    const BACKEND_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
     
     console.log('🔌 Connecting to Socket.IO server at:', BACKEND_URL)
     console.log('🔑 Using token:', token ? 'Token present' : 'No token')
