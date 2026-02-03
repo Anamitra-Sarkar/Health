@@ -152,6 +152,8 @@
 
 ## 😼 Quick Start
 
+> 📖 **For detailed setup instructions, see [SETUP.md](./SETUP.md)**
+
 ### Prerequisites
 
 - Node.js 22.x or higher
