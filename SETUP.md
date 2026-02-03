@@ -14,22 +14,25 @@ The application requires environment variables for both backend and frontend.
 
 ### Backend Environment Variables
 
-A `.env` file has been created in the `backend/` directory with the following configuration:
+A `.env` file needs to be created in the `backend/` directory with the following configuration:
 
 ```env
-MONGODB_URI=mongodb+srv://koyeliyaghoshcse2023_db_user:KLZ9sT4Gvt9VbyWB@cluster0.7rfpons.mongodb.net/?appName=Cluster0
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?appName=<appName>
 MONGODB_DB=healthsync
-JWT_SECRET=1b51ba56573c17593369995033d10633
+JWT_SECRET=<your-secure-random-secret-key>
 PORT=4000
 FRONTEND_URL=http://localhost:3000
 ENABLE_SOCKETS=true
 ```
 
-**Important:** The `.env` file is gitignored for security. Make sure to create it locally with your own credentials.
+**Important:** 
+- Replace `<username>`, `<password>`, `<cluster>`, and `<appName>` with your MongoDB Atlas credentials
+- Generate a secure random string for `JWT_SECRET` (e.g., using `openssl rand -hex 32`)
+- The `.env` file is gitignored for security. Never commit credentials to version control.
 
 ### Frontend Environment Variables
 
-A `.env` file has been created in the `react/` directory for local development:
+A `.env` file needs to be created in the `react/` directory for local development:
 
 ```env
 VITE_API_URL=http://localhost:4000
@@ -37,16 +40,45 @@ VITE_SOCKET_URL=http://localhost:4000
 VITE_API_BASE_URL=/api
 ```
 
+These settings point the frontend to your local backend server.
+
 ## Installation Steps
 
-### 1. Install Backend Dependencies
+### 1. Create Environment Files
+
+**Backend .env file:**
+```bash
+cd backend
+cat > .env << 'EOF'
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?appName=<appName>
+MONGODB_DB=healthsync
+JWT_SECRET=<your-secure-random-secret-key>
+PORT=4000
+FRONTEND_URL=http://localhost:3000
+ENABLE_SOCKETS=true
+EOF
+```
+
+Replace the placeholders with your actual values.
+
+**Frontend .env file:**
+```bash
+cd react
+cat > .env << 'EOF'
+VITE_API_URL=http://localhost:4000
+VITE_SOCKET_URL=http://localhost:4000
+VITE_API_BASE_URL=/api
+EOF
+```
+
+### 2. Install Backend Dependencies
 
 ```bash
 cd backend
 npm install
 ```
 
-### 2. Install Frontend Dependencies
+### 3. Install Frontend Dependencies
 
 ```bash
 cd react
@@ -94,11 +126,12 @@ The frontend will start on `http://localhost:3000`
 
 ### MongoDB Connection Issues
 
-If you see DNS resolution errors like `EREFUSED _mongodb._tcp.cluster0...`:
+If you see DNS resolution errors like `ENOTFOUND` or `querySrv EREFUSED`:
 - Check your internet connection
 - Verify the MongoDB URI is correct
 - Ensure your IP address is whitelisted in MongoDB Atlas
 - Check if your network allows connections to MongoDB Atlas
+- Try using a standard connection string instead of SRV format if DNS issues persist
 
 ### Port Already in Use
 
