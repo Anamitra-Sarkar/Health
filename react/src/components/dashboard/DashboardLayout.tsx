@@ -211,12 +211,14 @@ export default function DashboardLayout() {
 
   return (
     <div className={`flex min-h-screen bg-linear-to-br from-background via-background to-muted/20 relative`}>
-      {/* Background Pattern */}
-      {isDark && (
-                  <DarkVeil opacity={20} hueShift={15} noiseIntensity={0} scanlineIntensity={0.01} speed={0.75} warpAmount={0.015} />
-     )} 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(14,165,233,0.02),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.02),transparent_50%)] dark:bg-[radial-gradient(circle_at_20%_80%,rgba(14,165,233,0.05),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.05),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,165,233,0.005)_1px,transparent_1px),linear-gradient(rgba(14,165,233,0.005)_1px,transparent_1px)] bg-[size:6rem_6rem] dark:bg-[linear-gradient(90deg,rgba(14,165,233,0.01)_1px,transparent_1px),linear-gradient(rgba(14,165,233,0.01)_1px,transparent_1px)]" />
+      <DarkVeil opacity={30} hueShift={110} noiseIntensity={0.05} scanlineIntensity={0.02} speed={0.4} warpAmount={0.02} />
+      
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(16,185,129,0.05),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(20,184,166,0.05),transparent_50%)] animate-pulse [animation-duration:4s]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,185,129,0.02)_1px,transparent_1px),linear-gradient(rgba(16,185,129,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] dark:bg-[linear-gradient(90deg,rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(rgba(16,185,129,0.03)_1px,transparent_1px)]" />
+
+      {/* Heartbeat Overlay */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,transparent_60%,rgba(16,185,129,0.05)_100%)] animate-pulse [animation-duration:2s]" />
+
       
       {/* Notification Center - Toast notifications that auto-close */}
       <NotificationCenter notifications={toastNotifications} onRemove={removeToastNotification} />

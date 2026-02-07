@@ -222,7 +222,7 @@ export function Login() {
 	return (
 		<main className="min-h-screen bg-background relative">
 				{isDark && (
-						<DarkVeil hueShift={15} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
+						<DarkVeil hueShift={120} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
 					  )}
 			<div className="relative z-10">
 			
@@ -235,7 +235,7 @@ export function Login() {
 						<div className="space-y-8 pr-8">
 							<div>
 								<h1 className="text-4xl lg:text-5xl font-extrabold text-foreground leading-tight">
-									<span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-cyan-400">Welcome back</span>
+									<span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-400">Welcome back</span>
 									<span className="block text-2xl lg:text-3xl font-medium text-muted-foreground mt-2">to HealthSync</span>
 								</h1>
 								<p className="text-lg text-muted-foreground mt-4 leading-relaxed">Secure access to clinical workflows, patient records, and interoperability tools built for modern healthcare teams.</p>
@@ -243,7 +243,7 @@ export function Login() {
 							
 							<div className="grid gap-4">
 								<div className="flex items-start gap-3">
-									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1">
+									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1 animate-heartbeat">
 										<div className="w-2 h-2 rounded-full bg-primary"></div>
 									</div>
 									<div>
@@ -252,7 +252,7 @@ export function Login() {
 									</div>
 								</div>
 								<div className="flex items-start gap-3">
-									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1">
+									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1 animate-heartbeat" style={{animationDelay: '0.3s'}}>
 										<div className="w-2 h-2 rounded-full bg-primary"></div>
 									</div>
 									<div>
@@ -261,7 +261,7 @@ export function Login() {
 									</div>
 								</div>
 								<div className="flex items-start gap-3">
-									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1">
+									<div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1 animate-heartbeat" style={{animationDelay: '0.6s'}}>
 										<div className="w-2 h-2 rounded-full bg-primary"></div>
 									</div>
 									<div>
@@ -274,7 +274,7 @@ export function Login() {
 					</div>
 
 					<div>
-					<Card className="max-w-md md:max-w-lg w-full mx-auto p-8 md:p-10 rounded-2xl shadow-2xl backdrop-blur-sm bg-card/98 border border-border/60 shadow-black/10">
+					<Card className="max-w-md md:max-w-lg w-full mx-auto p-8 md:p-10 rounded-2xl shadow-2xl backdrop-blur-sm bg-card/98 border border-primary/20 shadow-primary/10 animate-fade-in-scale">
 						<div className="text-center mb-8">
 							<h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Welcome back</h2>
 							<p className="text-muted-foreground/80">Sign in to continue to HealthSync EMR</p>
@@ -323,7 +323,7 @@ export function Login() {
 								</div>
 
 								<div className="space-y-3">
-									<Button type="submit" size="lg" className="w-full h-12 rounded-lg shadow-lg bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-600 hover:to-cyan-500 transition-all duration-300 font-semibold" disabled={loading}>
+									<Button type="submit" size="lg" className="w-full h-12 rounded-lg shadow-lg bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 transition-all duration-300 font-semibold" disabled={loading}>
 										{loading ? "Signing in…" : "Sign in"}
 									</Button>
 									<p className="text-xs text-muted-foreground text-center">By continuing you agree to our <a href="#" className="text-primary hover:underline font-medium">Terms</a> and <a href="#" className="text-primary hover:underline font-medium">Privacy Policy</a>.</p>
@@ -349,9 +349,9 @@ export function Login() {
 									</Link>
 								</div> */}
 								<div className="text-center text-sm text-muted-foreground pt-4 border-t border-border/30">
-									Want to explore the dashboard?{' '}
-									<Link to="/signup" onClick={godummy} className="text-primary hover:underline font-semibold">
-										Try the demo account
+									New to HealthSync?{' '}
+									<Link to="/signup" className="text-primary hover:underline font-semibold">
+										Create an account
 									</Link>
 								</div>
 							</form>
@@ -420,7 +420,7 @@ export function Login() {
 											) : null}
 												<div className="flex items-center justify-end gap-3 pt-6">
 													<button type="button" className="px-6 py-3 border border-border rounded-lg hover:bg-muted/50 transition-colors font-medium" onClick={() => { setShowPinModal(false); setGoogleCredential(null); setPinDigits(['', '', '', '']) }}>Cancel</button>
-													<button type="submit" className="px-6 py-3 rounded-lg bg-gradient-to-r from-sky-500 to-cyan-400 text-white font-semibold hover:from-sky-600 hover:to-cyan-500 transition-all shadow-lg" disabled={googleLoading || pinDigits.some(d => d === '')}>{googleLoading ? 'Signing in…' : 'Continue'}</button>
+													<button type="submit" className="px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 text-white font-semibold hover:from-emerald-600 hover:to-teal-500 transition-all shadow-lg" disabled={googleLoading || pinDigits.some(d => d === '')}>{googleLoading ? 'Signing in…' : 'Continue'}</button>
 												</div>
 										</form>
 									</div>

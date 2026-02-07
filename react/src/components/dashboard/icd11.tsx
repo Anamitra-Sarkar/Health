@@ -136,7 +136,7 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 		const diseaseName = selectedItem?.title || icdCode
 		
 		try {
-			const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
+			const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
 			
 			// Call backend Gemini API endpoint
 			const response = await fetch(`${API_BASE}/api/groq/disease-info`, {
@@ -202,7 +202,7 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 		const searchQuery = `${diseaseName} ${icdCode} medical research treatment diagnosis`
 		
 		try {
-			const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
+			const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
 			
 			const response = await fetch(`${API_BASE}/api/groq/research-papers`, {
 				method: 'POST',
@@ -255,25 +255,28 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 	}
 
 	return (
-		<Card className="p-3 bg-card border-border">
-			<div className="flex items-center justify-between mb-2">
-				<h3 className="text-sm font-semibold text-foreground">ICD-11 Lookup</h3>
+		<Card className="p-4 bg-card border-border shadow-lg rounded-2xl animate-fade-in-up">
+			<div className="flex items-center justify-between mb-4">
+				<h3 className="text-lg font-bold text-foreground tracking-tight">ICD-11 Clinical Lookup</h3>
+				<div className="p-2 bg-primary/10 rounded-full">
+					<Search className="w-5 h-5 text-primary" />
+				</div>
 			</div>
 
-			<div className="relative">
-				<input   
+			<div className="relative animate-subtle-float">
+				<input
 					aria-label="Search ICD-11"
 					value={query}
 					onChange={(e) => {
-						setIsSelectionActive(false) // Allow new searches when user types
+						setIsSelectionActive(false)
 						setQuery(e.target.value)
 					}}
-					placeholder="Search ICD-11 — e.g. diabetes, heart"
-					className="w-full pl-9 pr-3 h-9 rounded-md border border-border bg-input text-sm"
+					placeholder="e.g., Diabetes, Hypertension, 1A00.0"
+					className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-border bg-input text-base focus:ring-2 focus:ring-primary focus:border-primary transition-all"
 				/>
-				<div className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground">
-					<Search className="w-4 h-4" />
-				</div> 
+				<div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+					<Search className="w-5 h-5" />
+				</div>
 			</div>
 
 		{showResults && (
@@ -527,12 +530,12 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 							)}
 
 							{detailedInfo.diagnosis && detailedInfo.diagnosis.length > 0 && (
-								<div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800/30">
-									<p className="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase mb-2">🔍 Diagnostic Methods</p>
+								<div className="bg-emerald-50 dark:bg-emerald-950/20 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800/30 animate-wave-ripple">
+									<p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase mb-2">🔍 Diagnostic Methods</p>
 									<ul className="space-y-1.5">
 										{detailedInfo.diagnosis.map((method, idx) => (
 											<li key={idx} className="text-sm text-foreground flex items-start gap-2">
-												<span className="text-blue-600 dark:text-blue-400 mt-0.5">✓</span>
+												<span className="text-emerald-600 dark:text-emerald-400 mt-0.5">✓</span>
 												<span>{method}</span>
 											</li>
 										))}

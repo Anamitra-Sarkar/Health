@@ -18,8 +18,8 @@ export default function AuthGuard({ children }: PropsWithChildren) {
           return
         }
 
-        // Validate token server-side
-        const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
+        // Validate token server-side (use relative URL so Vite proxy handles it)
+        const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
         const res = await fetch(`${API_BASE}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         })

@@ -396,10 +396,10 @@ export default function PatientsPage() {
           </div>
         </Card>
         {role === 'organization' && (
-          <Card className="p-4">
+          <Card className="p-4 animate-wave-ripple">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-blue-500/10">
-                <FileText className="h-5 w-5 text-blue-600" />
+              <div className="p-3 rounded-lg bg-emerald-500/10 animate-heartbeat-lines">
+                <FileText className="h-5 w-5 text-emerald-600" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Active Doctors</p>

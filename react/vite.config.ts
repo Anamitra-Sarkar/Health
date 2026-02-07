@@ -21,5 +21,17 @@ export default defineConfig({
   server: {
     // Vite dev server port (keep separate from backend, which commonly runs on 3000)
     port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/health': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })

@@ -41,7 +41,7 @@ export default function Home() {
     <main className="min-h-screen bg-background relative">
       {/* Only show DarkVeil in dark mode */}
       {isDark && (
-        <DarkVeil hueShift={15} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
+        <DarkVeil hueShift={120} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
       )}
       <div className="relative z-10">
         <Header />

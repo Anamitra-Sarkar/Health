@@ -163,14 +163,14 @@ export default function AnalyticsTab({ orgId }: { orgId: string | null }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="p-6 bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 border-blue-200/50 dark:border-blue-800/50">
+        <Card className="p-6 bg-linear-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/30 dark:to-emerald-900/20 border-emerald-200/50 dark:border-emerald-800/50 animate-wave-ripple">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Patients</p>
-              <p className="text-3xl font-bold text-blue-700 dark:text-blue-300 mt-2">{analytics.totalPatients}</p>
+              <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Total Patients</p>
+              <p className="text-3xl font-bold text-emerald-700 dark:text-emerald-300 mt-2">{analytics.totalPatients}</p>
             </div>
-            <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center">
-              <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center animate-heartbeat-lines">
+              <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </Card>
@@ -257,7 +257,7 @@ export default function AnalyticsTab({ orgId }: { orgId: string | null }) {
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
                   <div 
-                    className="bg-linear-to-r from-blue-500 to-cyan-400 h-2 rounded-full transition-all"
+                    className="bg-linear-to-r from-emerald-500 to-teal-400 h-2 rounded-full transition-all"
                     style={{ width: `${(count / maxAge) * 100}%` }}
                   />
                 </div>

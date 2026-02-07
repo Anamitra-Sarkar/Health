@@ -292,10 +292,10 @@ export default function ReportsPage() {
             </div>
           </div>
 
-          <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
+          <div className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10 animate-wave-ripple">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-lg bg-blue-500/10">
-                <User className="h-4 w-4 text-blue-600" />
+              <div className="p-2 rounded-lg bg-emerald-500/10">
+                <User className="h-4 w-4 text-emerald-600" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Total Patients</p>
@@ -384,7 +384,7 @@ export default function ReportsPage() {
                           </p>
                           {r.disease && (
                             <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-xs font-medium text-blue-600">
+                              <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-xs font-medium text-emerald-600 animate-heartbeat-lines">
                                 {r.disease}
                               </span>
                               {r.icd11 && (

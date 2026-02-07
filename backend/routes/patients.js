@@ -2,8 +2,12 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const getDb = require('../lib/mongo')
 const { ObjectId } = require('mongodb')
+const { v4: uuidv4 } = require('uuid')
 const router = express.Router()
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
+
+// In-memory patient store (fallback when MongoDB is unavailable)
+const patientsMap = (globalThis).__HS_PATIENTS ||= new Map()
 
 function getTokenFromReq(req) {
   const auth = req.get('authorization')
@@ -25,15 +29,22 @@ router.post('/', async (req, res) => {
 
   const body = req.body || {}
   const { name, age, icd11, disease } = body
-  if (!name || !age || !icd11) return res.status(400).json({ error: 'name, age and icd11 required' })
+  if (!name || !age) return res.status(400).json({ error: 'name and age required' })
 
     const db = await getDb()
-    if (!db) return res.status(503).json({ error: 'database unavailable' })
+    const doc = { name, age: Number(age), icd11: icd11 || null, ...(disease ? { disease: String(disease) } : {}), createdBy: data.id || data.email || null, createdAt: new Date() }
 
-    const patients = db.collection('patients')
-  const doc = { name, age: Number(age), icd11, ...(disease ? { disease: String(disease) } : {}), createdBy: data.id || data.email || null, createdAt: new Date() }
-    const r = await patients.insertOne(doc)
-    return res.status(201).json({ id: String(r.insertedId), ...doc })
+    if (db) {
+      const patients = db.collection('patients')
+      const r = await patients.insertOne(doc)
+      return res.status(201).json({ id: String(r.insertedId), ...doc })
+    }
+
+    // In-memory fallback
+    const id = uuidv4()
+    const memDoc = { ...doc, id }
+    patientsMap.set(id, memDoc)
+    return res.status(201).json(memDoc)
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('patients POST error', err)
@@ -110,11 +121,19 @@ router.get('/', async (req, res) => {
     if (!requester) return res.status(401).json({ error: 'invalid requester' })
 
     const db = await getDb()
-    if (!db) return res.status(503).json({ patients: [] })
+    if (db) {
+      // Only return patients created by this user (assigned to them)
+      const docs = await db.collection('patients').find({ createdBy: requester }).sort({ createdAt: -1 }).limit(50).toArray()
+      const patients = docs.map(d => ({ id: String(d._id), name: d.name, age: d.age, icd11: d.icd11, disease: d.disease, createdAt: d.createdAt, createdBy: d.createdBy, assignedAt: d.assignedAt }))
+      return res.json({ patients })
+    }
 
-    // Only return patients created by this user (assigned to them)
-    const docs = await db.collection('patients').find({ createdBy: requester }).sort({ createdAt: -1 }).limit(50).toArray()
-    const patients = docs.map(d => ({ id: String(d._id), name: d.name, age: d.age, icd11: d.icd11, disease: d.disease, createdAt: d.createdAt, createdBy: d.createdBy, assignedAt: d.assignedAt }))
+    // In-memory fallback
+    const patients = []
+    for (const p of patientsMap.values()) {
+      if (p.createdBy === requester) patients.push(p)
+    }
+    patients.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
     return res.json({ patients })
   } catch (err) {
     // eslint-disable-next-line no-console

@@ -177,7 +177,7 @@ export default function Header({ onSidebarToggle, notifications = [], onClearNot
 
 
   return (
-    <header className="h-16 border-b border-border bg-card flex items-center justify-between px-6">
+    <header className="h-16 border-b border-border/50 bg-card/80 backdrop-blur-xl flex items-center justify-between px-6">
       <div className="flex items-center gap-4 flex-1">
         <Button variant="ghost" size="sm" onClick={onSidebarToggle} className="inline-flex">
           <Menu className="w-5 h-5" />

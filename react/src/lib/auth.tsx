@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let mounted = true
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+  const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
 
   async function init() {
       setLoading(true)
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function login(email: string, password: string, remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     
     // Wake up backend if it's sleeping (Render free tier)
     await wakeUpBackend()
@@ -98,7 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function loginWithGoogle(credential: string, pin?: string, setPinForFuture = false, remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     const res = await fetch(`${API_BASE}/api/auth/google`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential, pin, setPinForFuture }) })
     const data = await res.json()
     if (!res.ok) throw new Error(data?.error || 'Google login failed')
@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function checkGoogleCredential(credential: string) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     const res = await fetch(`${API_BASE}/api/auth/google`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential }) })
     const data = await res.json()
     if (!res.ok) throw new Error(data?.error || 'Failed')
@@ -118,7 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function signup(payload: { email: string; password: string; role?: string; profile?: any }, remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     const res = await fetch(`${API_BASE}/api/auth/signup`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     const data = await res.json()
     if (!res.ok) throw new Error(data?.error || 'Signup failed')
@@ -130,7 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function logout() {
     try {
-      const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+      const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
       await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
     } catch (err) {
       // non-fatal logout error (network, etc.)
@@ -145,7 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function authFetch(input: RequestInfo, init?: RequestInit) {
     const token = getStoredToken()
     const headers = { ...(init?.headers as Record<string, string> | undefined), ...(token ? { Authorization: `Bearer ${token}` } : {}) }
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || 'https://healthsync-fawn.vercel.app'
+  const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     const url = typeof input === 'string' && input.startsWith('/api') ? `${API_BASE}${input}` : input
     return fetch(url, { ...init, headers })
   }

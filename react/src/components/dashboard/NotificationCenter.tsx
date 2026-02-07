@@ -47,7 +47,7 @@ const NotificationIcon = ({ type }: { type: Notification['type'] }) => {
 const getNotificationStyles = (type: Notification['type']) => {
   switch (type) {
     case 'patient-assigned':
-      return 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-blue-500/50 text-blue-900 dark:text-blue-100'
+      return 'bg-gradient-to-r from-emerald-500/10 to-green-500/10 border-emerald-500/50 text-emerald-900 dark:text-emerald-100 animate-wave-ripple'
     case 'success':
       return 'bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/50 text-green-900 dark:text-green-100'
     case 'error':

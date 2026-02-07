@@ -20,7 +20,7 @@ export function ForgotPassword() {
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
+  const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
 
   async function handleSendOTP(e: React.FormEvent) {
     e.preventDefault()

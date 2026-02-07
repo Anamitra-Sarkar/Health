@@ -176,7 +176,7 @@ export function Signup() {
   return (
     <main className="min-h-screen bg-background relative">
       {isDark && (
-              <DarkVeil hueShift={15} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
+              <DarkVeil hueShift={120} noiseIntensity={0.015} scanlineIntensity={0.01} speed={0.25} warpAmount={0.015} />
             )}
       <div className="relative z-10">
         <Header />
@@ -187,7 +187,7 @@ export function Signup() {
             <div className="space-y-8 pr-8">
               <div>
                 <h1 className="text-4xl lg:text-5xl font-extrabold text-foreground leading-tight">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-cyan-400">Join HealthSync</span>
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-teal-400">Join HealthSync</span>
                   <span className="block text-2xl lg:text-3xl font-medium text-muted-foreground mt-2">today</span>
                 </h1>
                 <p className="text-lg text-muted-foreground mt-4 leading-relaxed">Start a secure, interoperable EMR for your clinic or team. Invite colleagues, configure integrations, and import patient data.</p>
@@ -226,7 +226,7 @@ export function Signup() {
           </div>
 
           <div>
-            <Card className="max-w-md md:max-w-lg lg:max-w-xl w-full mx-auto p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-sm bg-card/95 border-border/50">
+            <Card className="max-w-md md:max-w-lg lg:max-w-xl w-full mx-auto p-6 md:p-8 rounded-2xl shadow-2xl backdrop-blur-sm bg-card/95 border-primary/20 shadow-primary/10 animate-fade-in-scale">
               <div className="text-center mb-6">
                 <h2 className="text-xl md:text-2xl font-bold text-foreground mb-1">Get started with HealthSync</h2>
                 <p className="text-sm text-muted-foreground">Create your account and start building better healthcare workflows</p>
@@ -237,13 +237,13 @@ export function Signup() {
                 <button
                   type="button"
                   onClick={() => setRole("doctor")}
-                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "doctor" ? 'bg-gradient-to-r from-emerald-500 to-cyan-400 text-white shadow-lg transform scale-[1.02]' : 'text-muted-foreground hover:text-foreground hover:bg-background/60'}`}>
+                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "doctor" ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-lg transform scale-[1.02]' : 'text-muted-foreground hover:text-foreground hover:bg-background/60'}`}>
                   Doctor
                 </button>
                 <button
                   type="button"
                   onClick={() => setRole("organization")}
-                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "organization" ? 'bg-gradient-to-r from-emerald-500 to-cyan-400 text-white shadow-lg transform scale-[1.02]' : 'text-muted-foreground hover:text-foreground hover:bg-background/60'}`}>
+                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "organization" ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-lg transform scale-[1.02]' : 'text-muted-foreground hover:text-foreground hover:bg-background/60'}`}>
                   Organization
                 </button>
               </div>
@@ -341,7 +341,7 @@ export function Signup() {
                 )}
 
                 <div className="space-y-2 pt-2">
-                  <Button type="submit" className="w-full h-10 rounded-lg shadow-lg bg-gradient-to-r from-emerald-500 to-cyan-400 hover:from-emerald-600 hover:to-cyan-500 transition-all duration-300 font-semibold" disabled={loading}>
+                  <Button type="submit" className="w-full h-10 rounded-lg shadow-lg bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 transition-all duration-300 font-semibold" disabled={loading}>
                     {loading ? (role === 'doctor' ? 'Creating account…' : 'Setting up org…') : 'Create account'}
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">By continuing you agree to our <a href="#" className="text-primary hover:underline font-medium">Terms</a> and <a href="#" className="text-primary hover:underline font-medium">Privacy Policy</a>.</p>

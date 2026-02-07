@@ -12,12 +12,14 @@ import ICD11Sidebar from './components/dashboard/icd11'
 import SettingsPage from './components/dashboard/settings'
 import ReportsPage from './components/dashboard/ReportsPage'
 import PatientsPage from './components/dashboard/PatientsPage'
+import Chatbot from './components/dashboard/Chatbot'
 import AuthProvider from '@/lib/auth'
 import { SocketProvider } from '@/lib/socket'
 import { wakeUpOnPageLoad } from '@/lib/keepAlive'
 import './index.css'
 import { useAuth } from '@/lib/auth'
 import About from './components/pages/about'
+
 
 // Wake up Render backend on initial page load
 wakeUpOnPageLoad()
@@ -72,6 +74,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="icd11" element={<ICD11Sidebar />} />
               <Route path="patients" element={<PatientsPage />} />
               <Route path="reports" element={<ReportsPage />} />
+              <Route path="chatbot" element={<Chatbot />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
 

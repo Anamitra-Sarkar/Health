@@ -1,12 +1,35 @@
 "use client"
 
 import { Button } from "./ui/button"
-import { Users, MessageCircle, BookOpen, Shield, Search, ChevronUp, ChevronDown } from "lucide-react"
+import { Users, MessageCircle, BookOpen, Shield, Search, ChevronUp, ChevronDown, Heart, Activity, Stethoscope, Pill, Syringe, Thermometer, HeartPulse, Cross, Hospital, Droplet, Brain, Eye, Bone, Ambulance, Clipboard, FileHeart } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { useRef, useState, useEffect } from "react"
 import { Card } from "./ui/card"
 // import DarkVeil from "./reactBit"
+
+// Floating medical icons for the background - expanded for more visual richness
+const floatingIcons = [
+  { Icon: Heart, delay: 0, duration: 8, x: '10%', y: '15%' },
+  { Icon: Activity, delay: 0.5, duration: 10, x: '80%', y: '20%' },
+  { Icon: Stethoscope, delay: 1, duration: 9, x: '70%', y: '60%' },
+  { Icon: Pill, delay: 1.5, duration: 11, x: '15%', y: '70%' },
+  { Icon: HeartPulse, delay: 2, duration: 7, x: '85%', y: '80%' },
+  { Icon: Thermometer, delay: 2.5, duration: 12, x: '25%', y: '40%' },
+  { Icon: Cross, delay: 3, duration: 8, x: '60%', y: '35%' },
+  { Icon: Hospital, delay: 3.5, duration: 10, x: '90%', y: '45%' },
+  { Icon: Syringe, delay: 4, duration: 9, x: '5%', y: '55%' },
+  { Icon: Heart, delay: 4.5, duration: 11, x: '50%', y: '85%' },
+  // Additional icons for enhanced visual richness
+  { Icon: Droplet, delay: 0.3, duration: 13, x: '35%', y: '10%' },
+  { Icon: Brain, delay: 1.2, duration: 14, x: '92%', y: '65%' },
+  { Icon: Eye, delay: 2.2, duration: 10, x: '45%', y: '25%' },
+  { Icon: Bone, delay: 3.3, duration: 9, x: '8%', y: '85%' },
+  { Icon: Ambulance, delay: 1.8, duration: 12, x: '75%', y: '10%' },
+  { Icon: Clipboard, delay: 2.8, duration: 8, x: '20%', y: '90%' },
+  { Icon: FileHeart, delay: 3.8, duration: 11, x: '65%', y: '75%' },
+  { Icon: Cross, delay: 0.8, duration: 15, x: '55%', y: '5%' },
+]
 
 const features = [
   {
@@ -214,12 +237,133 @@ export function Hero() {
     <div ref={containerRef} className="overflow-hidden relative">
 
       {/* Hero Section with Split Layout and Interactive Elements */}
-      <section className="relative py-8 md:py-12 lg:py-16">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(14,165,233,0.05),transparent_50%),radial-gradient(circle_at_70%_20%,rgba(16,185,129,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_80%,rgba(14,165,233,0.1),transparent_50%),radial-gradient(circle_at_70%_20%,rgba(16,185,129,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,165,233,0.01)_1px,transparent_1px),linear-gradient(rgba(14,165,233,0.01)_1px,transparent_1px)] bg-[size:4rem_4rem] dark:bg-[linear-gradient(90deg,rgba(14,165,233,0.03)_1px,transparent_1px),linear-gradient(rgba(14,165,233,0.03)_1px,transparent_1px)]" />
+      <section className="relative py-8 md:py-12 lg:py-16 min-h-[90vh]">
+        {/* Animated Green Waves Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Top wave layer - subtle accent */}
+          <svg className="absolute top-0 left-0 w-full h-40 opacity-10 dark:opacity-15 rotate-180" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <motion.path
+              fill="rgba(5, 150, 105, 0.25)"
+              d="M0,64L60,80C120,96,240,128,360,138.7C480,149,600,139,720,122.7C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+              animate={{
+                d: [
+                  "M0,64L60,80C120,96,240,128,360,138.7C480,149,600,139,720,122.7C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z",
+                  "M0,96L60,106.7C120,117,240,139,360,133.3C480,128,600,96,720,96C840,96,960,128,1080,133.3C1200,139,1320,117,1380,106.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z",
+                  "M0,64L60,80C120,96,240,128,360,138.7C480,149,600,139,720,122.7C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+                ]
+              }}
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+          
+          {/* Middle wave layer - decorative */}
+          <svg className="absolute top-1/3 left-0 w-full h-32 opacity-8 dark:opacity-12" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <motion.path
+              fill="rgba(16, 185, 129, 0.15)"
+              d="M0,160L40,170.7C80,181,160,203,240,186.7C320,171,400,117,480,106.7C560,96,640,128,720,154.7C800,181,880,203,960,192C1040,181,1120,139,1200,128C1280,117,1360,139,1400,149.3L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+              animate={{
+                d: [
+                  "M0,160L40,170.7C80,181,160,203,240,186.7C320,171,400,117,480,106.7C560,96,640,128,720,154.7C800,181,880,203,960,192C1040,181,1120,139,1200,128C1280,117,1360,139,1400,149.3L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z",
+                  "M0,128L40,144C80,160,160,192,240,197.3C320,203,400,181,480,165.3C560,149,640,139,720,149.3C800,160,880,192,960,186.7C1040,181,1120,139,1200,122.7C1280,107,1360,117,1400,122.7L1440,128L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z",
+                  "M0,160L40,170.7C80,181,160,203,240,186.7C320,171,400,117,480,106.7C560,96,640,128,720,154.7C800,181,880,203,960,192C1040,181,1120,139,1200,128C1280,117,1360,139,1400,149.3L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+                ]
+              }}
+              transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            />
+          </svg>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          {/* Animated wave layers - bottom */}
+          <svg className="absolute bottom-0 left-0 w-full h-64 opacity-20 dark:opacity-30" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <motion.path
+              fill="rgba(16, 185, 129, 0.3)"
+              d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,154.7C960,149,1056,171,1152,181.3C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+              animate={{
+                d: [
+                  "M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,154.7C960,149,1056,171,1152,181.3C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+                  "M0,160L48,181.3C96,203,192,245,288,234.7C384,224,480,160,576,138.7C672,117,768,139,864,160C960,181,1056,203,1152,197.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+                  "M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,154.7C960,149,1056,171,1152,181.3C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                ]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+          <svg className="absolute bottom-0 left-0 w-full h-48 opacity-15 dark:opacity-25" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <motion.path
+              fill="rgba(52, 211, 153, 0.4)"
+              d="M0,256L48,234.7C96,213,192,171,288,165.3C384,160,480,192,576,213.3C672,235,768,245,864,234.7C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+              animate={{
+                d: [
+                  "M0,256L48,234.7C96,213,192,171,288,165.3C384,160,480,192,576,213.3C672,235,768,245,864,234.7C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+                  "M0,224L48,213.3C96,203,192,181,288,192C384,203,480,245,576,250.7C672,256,768,224,864,213.3C960,203,1056,213,1152,229.3C1248,245,1344,267,1392,277.3L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+                  "M0,256L48,234.7C96,213,192,171,288,165.3C384,160,480,192,576,213.3C672,235,768,245,864,234.7C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+                ]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            />
+          </svg>
+          
+          {/* Third bottom wave - accent layer */}
+          <svg className="absolute bottom-0 left-0 w-full h-36 opacity-12 dark:opacity-18" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <motion.path
+              fill="rgba(110, 231, 183, 0.35)"
+              d="M0,288L60,277.3C120,267,240,245,360,240C480,235,600,245,720,261.3C840,277,960,299,1080,293.3C1200,288,1320,256,1380,240L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+              animate={{
+                d: [
+                  "M0,288L60,277.3C120,267,240,245,360,240C480,235,600,245,720,261.3C840,277,960,299,1080,293.3C1200,288,1320,256,1380,240L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z",
+                  "M0,256L60,266.7C120,277,240,299,360,298.7C480,299,600,277,720,261.3C840,245,960,235,1080,245.3C1200,256,1320,288,1380,304L1440,320L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z",
+                  "M0,288L60,277.3C120,267,240,245,360,240C480,235,600,245,720,261.3C840,277,960,299,1080,293.3C1200,288,1320,256,1380,240L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+                ]
+              }}
+              transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+            />
+          </svg>
+          
+          {/* Floating medical icons */}
+          {floatingIcons.map(({ Icon, delay, duration, x, y }, index) => (
+            <motion.div
+              key={index}
+              className="absolute pointer-events-none"
+              style={{ left: x, top: y }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ 
+                opacity: [0.1, 0.25, 0.1],
+                scale: [0.8, 1.1, 0.8],
+                y: [0, -20, 0],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{ 
+                duration, 
+                repeat: Infinity, 
+                delay,
+                ease: "easeInOut"
+              }}
+            >
+              <Icon className="w-8 h-8 md:w-12 md:h-12 text-emerald-500/30 dark:text-emerald-400/20" />
+            </motion.div>
+          ))}
+          
+          {/* EKG/Heartbeat line animation */}
+          <div className="absolute top-1/2 left-0 w-full h-32 overflow-hidden opacity-10 dark:opacity-20">
+            <motion.svg 
+              className="w-[200%] h-full" 
+              viewBox="0 0 1000 100" 
+              preserveAspectRatio="none"
+              animate={{ x: [0, -500] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            >
+              <motion.path
+                d="M0,50 L100,50 L120,50 L130,20 L140,80 L150,30 L160,70 L170,50 L250,50 L350,50 L370,50 L380,20 L390,80 L400,30 L410,70 L420,50 L500,50 L600,50 L620,50 L630,20 L640,80 L650,30 L660,70 L670,50 L750,50 L850,50 L870,50 L880,20 L890,80 L900,30 L910,70 L920,50 L1000,50"
+                stroke="rgba(16, 185, 129, 0.6)"
+                strokeWidth="2"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          </div>
+        </div>
+
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-8 md:py-12">
             
             {/* Left Column - Brand & Navigation */}
@@ -240,12 +384,12 @@ export function Hero() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                      <span className="bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-white dark:via-slate-100 dark:to-white bg-clip-text text-transparent">
+                      <span className="bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-white dark:via-emerald-50 dark:to-white bg-clip-text text-transparent">
                         Health
                       </span>
                     </motion.span>
                     <motion.span 
-                      className="bg-linear-to-r from-sky-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent"
+                      className="bg-linear-to-r from-emerald-400 via-green-400 to-teal-400 bg-clip-text text-transparent"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
@@ -280,7 +424,7 @@ export function Hero() {
                 >
                   <Button 
                     size="lg" 
-                    className="bg-linear-to-r from-sky-500 to-emerald-500 hover:from-sky-600 hover:to-emerald-600 text-white px-8 py-6 text-lg shadow-xl shadow-sky-500/25 hover:shadow-sky-500/40 transition-all duration-300"
+                    className="relative bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-8 py-6 text-lg shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 animate-glow-pulse animate-wave-pulse"
                     onClick={() => window.location.href = '/dashboard'}
                   >
                     Go to Dashboard
@@ -295,221 +439,102 @@ export function Hero() {
                   </Button>
                 </motion.div>
 
-                {/* Saved Diagnosis Preview */}
+                {/* Animated Stethoscope Hero Visual */}
                 <motion.div 
-                  className="space-y-3"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 }}
+                  className="relative mt-8"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
-                    <span className="text-sm font-medium text-foreground/70 dark:text-foreground/80">Recent Diagnosis</span>
-                  </div>
-                  <div className="space-y-2 max-h-32 overflow-y-auto">
-                    {saved.length === 0 ? (
-                      <p className="text-sm text-foreground/50 dark:text-foreground/60 italic">Try the search to save diagnosis</p>
-                    ) : (
-                      saved.slice(0, 3).map((s, idx) => (
-                        <motion.div 
-                          key={s.id} 
-                          className="p-3 rounded-lg bg-linear-to-r from-sky-50/50 to-emerald-50/50 dark:from-sky-950/20 dark:to-emerald-950/20 border border-sky-200/30 dark:border-sky-800/30 backdrop-blur-sm"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.3, delay: idx * 0.1 }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <div className="text-sm font-medium text-foreground/90 dark:text-foreground">{s.title}</div>
-                          <div className="text-xs text-foreground/60 dark:text-foreground/70">ICD-11: {s.icd}</div>
-                        </motion.div>
-                      ))
-                    )}
-                  </div>
-                  {sendLog && (
-                    <motion.p 
-                      className="text-sm text-emerald-600 dark:text-emerald-400 font-medium"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                  <div className="relative flex items-center justify-center">
+                    {/* Pulsing rings around stethoscope */}
+                    <motion.div 
+                      className="absolute w-40 h-40 rounded-full border-2 border-emerald-500/30 dark:border-emerald-400/30"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.div 
+                      className="absolute w-32 h-32 rounded-full border-2 border-teal-500/40 dark:border-teal-400/40"
+                      animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                    />
+                    <motion.div 
+                      className="absolute w-24 h-24 rounded-full border-2 border-green-500/50 dark:border-green-400/50"
+                      animate={{ scale: [1, 1.5, 1], opacity: [0.7, 0, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                    />
+                    
+                    {/* Main stethoscope icon with glow */}
+                    <motion.div 
+                      className="relative z-10 w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 dark:from-emerald-400 dark:to-teal-400 flex items-center justify-center shadow-2xl shadow-emerald-500/40"
+                      animate={{ 
+                        scale: [1, 1.05, 1],
+                        boxShadow: [
+                          '0 0 20px rgba(16, 185, 129, 0.4)',
+                          '0 0 40px rgba(16, 185, 129, 0.6)',
+                          '0 0 20px rgba(16, 185, 129, 0.4)'
+                        ]
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
                     >
-                      ✓ {sendLog}
-                    </motion.p>
-                  )}
+                      <Stethoscope className="w-10 h-10 text-white" />
+                    </motion.div>
+                  </div>
+                  
+                  {/* Stats badges around the stethoscope */}
+                  <div className="flex justify-center gap-4 mt-6">
+                    <motion.div 
+                      className="px-4 py-2 rounded-full bg-gradient-to-r from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40 border border-emerald-300/50 dark:border-emerald-700/50 backdrop-blur-sm"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.2 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">HIPAA Compliant</span>
+                      </div>
+                    </motion.div>
+                    <motion.div 
+                      className="px-4 py-2 rounded-full bg-gradient-to-r from-teal-100 to-green-100 dark:from-teal-900/40 dark:to-green-900/40 border border-teal-300/50 dark:border-teal-700/50 backdrop-blur-sm"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.4 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                        <span className="text-sm font-semibold text-teal-700 dark:text-teal-300">FHIR Ready</span>
+                      </div>
+                    </motion.div>
+                  </div>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Right Column - Interactive ICD Search Terminal */}
-            <motion.div 
-              className="lg:col-span-7"
-              initial={{ opacity: 0, x: 20 }}
+            {/* Right Column - responsive image: large on desktop, centered small on mobile */}
+            <motion.div
+              className="lg:col-span-7 flex items-center justify-end"
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.9, delay: 0.9 }}
             >
-              <div className="relative">
-                {/* Terminal Window */}
-                <div className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 rounded-2xl shadow-2xl border border-slate-700/50 dark:border-slate-800/50 overflow-hidden">
-                  {/* Terminal Header */}
-                  <div className="flex items-center justify-between px-6 py-4 bg-slate-800/50 dark:bg-slate-900/50 border-b border-slate-700/50 dark:border-slate-800/50">
-                    <div className="flex items-center gap-2">
-                      <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                      </div>
-                      <span className="text-sm font-mono text-slate-400 ml-4">ICD-11 Clinical Terminal</span>
-                    </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                      HealthSync v2024.1
-                    </div>
-                  </div>
+              <div className="w-full max-w-md lg:max-w-lg flex justify-end pr-4 lg:pr-8">
+                {/* Desktop: right-aligned large image */}
+                <img
+                  src="/assets/stethoscope.png"
+                  alt="stethoscope"
+                  loading="lazy"
+                  className="hidden lg:block w-64 md:w-80 lg:w-[420px] object-contain rounded-xl shadow-2xl"
+                />
 
-                  {/* Terminal Content */}
-                  <div className="p-6 space-y-6">
-                    {/* Search Interface */}
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-emerald-400 font-mono text-sm">
-                        <span>healthcare@terminal:~$</span>
-                        <span className="text-slate-400">search-icd11</span>
-                      </div>
-                      
-                      <div className="relative">
-                        <input
-                          aria-label="Search ICD-11 diagnosis"
-                          role="combobox"
-                          aria-controls={listboxId}
-                          aria-expanded={filtered.length > 0}
-                          aria-autocomplete="list"
-                          aria-activedescendant={highlightedIndex >= 0 && filtered[highlightedIndex] ? `icd-option-${highlightedIndex}` : undefined}
-                          type="search"
-                          value={query}
-                          onChange={(e) => setQuery(e.target.value)}
-                          onKeyDown={onInputKeyDown}
-                          placeholder="Enter diagnosis or ICD code..."
-                          className="w-full bg-slate-800/50 dark:bg-slate-900/50 border border-slate-600/50 dark:border-slate-700/50 rounded-lg px-4 py-3 text-slate-100 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:border-emerald-400/50 focus:ring-2 focus:ring-emerald-400/25 transition-all font-mono"
-                        />
-                        {query && (
-                          <motion.div 
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400"
-                            animate={{ rotate: loading ? 360 : 0 }}
-                            transition={{ duration: 1, repeat: loading ? Infinity : 0 }}
-                          >
-                            <Search className="w-4 h-4" />
-                          </motion.div>
-                        )}
-                      </div>
-                      
-                      {/* Search Results */}
-                      {filtered.length > 0 && (
-                        <motion.div
-                          className="relative"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                        >
-                          <div className="text-xs text-slate-400 font-mono mb-2">
-                            Found {filtered.length} matches:
-                          </div>
-                          
-                          {/* Scroll Up Indicator with Blur */}
-                          {canScrollUpResults && (
-                            <div className="absolute top-6 left-0 right-0 h-12 bg-linear-to-b from-slate-900 via-slate-900/60 to-transparent dark:from-slate-950 dark:via-slate-950/60 z-10 flex items-start justify-center pointer-events-none rounded-t-lg backdrop-blur-sm">
-                              <ChevronUp className="w-5 h-5 text-emerald-400 mt-2" />
-                            </div>
-                          )}
-
-                          {/* Scrollable Results Container */}
-                          <div 
-                            ref={resultsScrollRef}
-                            className="space-y-2 max-h-64 overflow-y-auto"
-                            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-                            onScroll={handleResultsScroll}
-                          >
-                            {filtered.slice(0, 15).map((d, idx) => (
-                              <motion.button
-                                key={d.id}
-                                onClick={() => {
-                                  setSelected(d)
-                                  setHighlightedIndex(-1)
-                                  setQuery('')
-                                }}
-                                className={`w-full text-left p-3 rounded-lg transition-all ${
-                                  highlightedIndex === idx 
-                                    ? 'bg-emerald-400/10 border-emerald-400/30' 
-                                    : 'bg-slate-800/30 dark:bg-slate-900/30 hover:bg-slate-700/30 dark:hover:bg-slate-800/30'
-                                } border border-slate-600/30 dark:border-slate-700/30`}
-                                onMouseEnter={() => setHighlightedIndex(idx)}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.2, delay: idx * 0.05 }}
-                              >
-                                <div className="text-sm font-medium text-slate-100 dark:text-slate-200">{d.title}</div>
-                                <div className="text-xs text-emerald-400 font-mono mt-1">ICD-11: {d.icd}</div>
-                              </motion.button>
-                            ))}
-                          </div>
-
-                          {/* Scroll Down Indicator with Blur */}
-                          {canScrollDownResults && (
-                            <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent dark:from-slate-950 dark:via-slate-950/60 flex items-end justify-center pointer-events-none rounded-b-lg backdrop-blur-sm">
-                              <ChevronDown className="w-5 h-5 text-emerald-400 mb-2" />
-                            </div>
-                          )}
-                        </motion.div>
-                      )}
-
-                      {loading && (
-                        <div className="flex items-center gap-2 text-slate-400 text-sm font-mono">
-                          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                          Searching ICD-11 database...
-                        </div>
-                      )}
-
-                      {error && (
-                        <div className="text-red-400 text-sm font-mono bg-red-950/20 border border-red-800/30 rounded-lg p-3">
-                          Error: {error}
-                        </div>
-                      )}
-                    </div>
-                    
-
-                    {/* Selected Diagnosis Display */}
-                    <div className="bg-slate-800/30 dark:bg-slate-900/30 rounded-lg p-4 border border-slate-600/30 dark:border-slate-700/30">
-                      <div className="text-xs text-slate-400 font-mono mb-2">SELECTED DIAGNOSIS:</div>
-                      {selected ? (
-                        <div className="space-y-2">
-                          <div className="text-sm font-medium text-slate-100 dark:text-slate-200">{selected.title}</div>
-                          <div className="text-xs text-slate-400">{selected.description}</div>
-                          <div className="text-xs text-emerald-400 font-mono">ICD-11: {selected.icd}</div>
-                        </div>
-                      ) : (
-                        <div className="text-sm text-slate-400 italic">No diagnosis selected</div>
-                      )}
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-3">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={handleSave} 
-                        disabled={!selected}
-                        className="border-emerald-400/50 text-emerald-400 hover:bg-emerald-400/10"
-                      >
-                        Save
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        onClick={handleMockSend} 
-                        disabled={!selected || sending}
-                        className="bg-sky-400/20 text-sky-300 hover:bg-sky-400/30"
-                      >
-                        {sending ? 'Opening Dashboard...' : 'Send to EMR'}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
+                {/* Mobile: centered smaller image that appears below the left column when stacked */}
+                <img
+                  src="/assets/stethoscope.png"
+                  alt="stethoscope"
+                  loading="lazy"
+                  className="block lg:hidden w-40 sm:w-48 md:w-56 object-contain rounded-xl shadow-xl mx-auto mt-6"
+                />
               </div>
             </motion.div>
           </div>
@@ -517,47 +542,47 @@ export function Hero() {
       </section>
 
       {/* Features Section with Modern Cards */}
-      <section id="features" className="relative py-20 lg:py-32">
-        <div className="absolute inset-0 bg-linear-to-b from-muted/20 to-background"></div>
+      <section id="features" className="relative py-24 lg:py-32">
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/20 to-background"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-20"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Built for <span className="bg-linear-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent">Healthcare</span> Excellence
+            <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+              Built for <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Modern Healthcare</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Every feature designed with clinical workflows and patient outcomes in mind
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Every feature is meticulously designed with clinical workflows and patient outcomes at the forefront.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
+                  whileHover={{ y: -8, scale: 1.03 }}
                   className="group"
                 >
-                  <Card className="p-8 bg-linear-to-br from-card/80 via-card to-card/80 hover:shadow-2xl transition-all duration-500 border border-border/60 backdrop-blur-sm h-full">
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-2xl bg-linear-to-r from-sky-400/10 via-emerald-400/10 to-cyan-400/10 border border-sky-200/20 dark:border-sky-800/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <Icon className="w-6 h-6 text-sky-500 dark:text-sky-400" />
+                  <Card className="p-8 bg-gradient-to-br from-card/80 via-card to-card/80 hover:shadow-2xl hover:shadow-emerald-500/15 transition-all duration-500 border-2 border-border/60 hover:border-emerald-500/40 backdrop-blur-md h-full rounded-2xl">
+                    <div className="space-y-5">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-emerald-400/10 via-green-400/10 to-teal-400/10 border-2 border-emerald-200/30 dark:border-emerald-800/30 flex items-center justify-center group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-emerald-500/25 transition-all duration-400">
+                        <Icon className="w-8 h-8 text-emerald-500 dark:text-emerald-400" />
                       </div>
-                      <h3 className="text-xl font-semibold text-foreground group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                      <h3 className="text-2xl font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                         {feature.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-lg text-muted-foreground leading-relaxed">
                         {feature.description}
                       </p>
                     </div>

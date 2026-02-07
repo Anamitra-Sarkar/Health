@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 lg:gap-12 mb-12">
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg animate-glow-pulse">
                 <img src="/logo-white.png" alt="HealthSync Logo" className="w-6 h-6" />
               </div>
               <span className="font-bold text-foreground text-xl">HealthSync EMR</span>
@@ -18,8 +18,8 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-              <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" style={{animationDelay: '1s'}}></div>
             </div>
           </div>
 
@@ -102,7 +102,7 @@ export function Footer() {
               &copy; 2025 HealthSync EMR. All rights reserved. Built for secure clinical workflows and interoperability.
             </p>
             <div className="flex items-center gap-4">
-              <div className="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/10 to-cyan-400/10 border border-primary/20">
+              <div className="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-400/10 border border-primary/20">
                 <span className="text-xs font-semibold text-primary">HIPAA Compliant</span>
               </div>
             </div>

@@ -299,14 +299,14 @@ export default function EMRDashboard() {
         <>
         {/* Statistics Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-6 bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 border-blue-200/50 dark:border-blue-800/50">
+          <Card className="p-6 bg-linear-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/30 dark:to-emerald-900/20 border-emerald-200/50 dark:border-emerald-800/50 animate-wave-ripple">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Patients</p>
-                <p className="text-3xl font-bold text-blue-700 dark:text-blue-300 mt-2">{orgPatients.length}</p>
+                <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Total Patients</p>
+                <p className="text-3xl font-bold text-emerald-700 dark:text-emerald-300 mt-2">{orgPatients.length}</p>
               </div>
-              <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center animate-heartbeat-lines">
+                <Users className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
           </Card>
@@ -448,7 +448,7 @@ export default function EMRDashboard() {
                         </div>
                       </td>
                       <td className="py-4 px-6">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-xs font-medium animate-heartbeat-lines">
                           {p.age ?? '—'}
                         </span>
                       </td>

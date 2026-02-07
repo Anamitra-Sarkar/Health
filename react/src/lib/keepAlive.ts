@@ -4,7 +4,7 @@
  * Render free tier spins down after 15 minutes of inactivity
  */
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+const BACKEND_URL = import.meta.env.VITE_API_URL || ''
 const HEALTH_ENDPOINT = '/health'
 
 let lastPingTime = 0

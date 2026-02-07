@@ -57,7 +57,7 @@ export function Community() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 via-cyan-400 to-sky-400">Trusted by Care Teams</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 via-green-400 to-teal-400">Trusted by Care Teams</span>
           </h2>
           <p className="text-lg lg:text-xl text-muted-foreground/90 max-w-3xl mx-auto text-balance leading-relaxed">
             Hear from clinics and hospitals using HealthSync EMR to improve care coordination and patient outcomes.

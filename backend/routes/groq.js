@@ -136,4 +136,84 @@ router.post('/research-papers', async (req, res) => {
   }
 })
 
+// Chatbot endpoint for general medical Q&A
+router.post('/chat', async (req, res) => {
+  try {
+    const { message, history } = req.body
+
+    if (!message || typeof message !== 'string' || !message.trim()) {
+      return res.status(400).json({ error: 'Message is required' })
+    }
+
+    const GROQ_API_KEY = process.env.GROQ_API_KEY
+    
+    if (!GROQ_API_KEY) {
+      return res.status(500).json({ error: 'GROQ API key not configured' })
+    }
+
+    // Build conversation history
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are HealthSync AI Assistant, a knowledgeable medical chatbot designed to help healthcare professionals. You provide accurate, evidence-based medical information, assist with ICD-11 code lookups, disease information, treatment protocols, and clinical decision support. Always maintain a professional tone and remind users that your responses are for informational purposes and should not replace clinical judgment. Keep responses concise but informative.'
+      }
+    ]
+
+    // Add conversation history if provided
+    if (Array.isArray(history) && history.length > 0) {
+      history.forEach(msg => {
+        if (msg.role && msg.content) {
+          messages.push({
+            role: msg.role,
+            content: msg.content
+          })
+        }
+      })
+    }
+
+    // Add current user message
+    messages.push({
+      role: 'user',
+      content: message.trim()
+    })
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: messages,
+          temperature: 0.7,
+          max_tokens: 1024,
+          top_p: 0.95
+        })
+      }
+    )
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Groq API error:', errorText)
+      return res.status(response.status).json({ error: 'Failed to generate response' })
+    }
+
+    const data = await response.json()
+    const assistantMessage = data.choices?.[0]?.message?.content || 'I apologize, but I could not generate a response.'
+
+    return res.json({ 
+      success: true, 
+      message: assistantMessage,
+      model: 'llama-3.3-70b-versatile'
+    })
+
+  } catch (err) {
+    console.error('Chatbot API error:', err)
+    return res.status(500).json({ error: 'Failed to process chat message' })
+  }
+})
+
 module.exports = router

@@ -1,0 +1,8 @@
+services:
+  - type: web_service
+    name: Healthsync
+    env: docker
+    repo: AkankshRakesh/Healthsync
+    branch: master
+    dockerfilePath: Dockerfile
+    plan: free
