@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 
 try {
   require('dotenv').config({ path: path.join(__dirname, '.env') })
@@ -133,6 +134,20 @@ app.get('/health', (req, res) => {
     socketEnabled: ENABLE_SOCKETS
   })
 })
+
+// Redirect root to health check to avoid "Cannot GET /" in browser
+// If a built frontend exists (react/dist), serve it in production; otherwise keep redirect
+const builtFrontend = path.join(__dirname, '..', 'react', 'dist')
+if (fs.existsSync(builtFrontend)) {
+  app.use(express.static(builtFrontend))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(builtFrontend, 'index.html'))
+  })
+} else {
+  app.get('/', (req, res) => {
+    res.redirect('/health')
+  })
+}
 
 // Export the app and server for serverless wrappers (Vercel functions) and also allow
 // starting a standalone server when run directly (node index.js)
