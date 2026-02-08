@@ -9,7 +9,10 @@ This guide provides step-by-step instructions for deploying the HealthSync appli
 Before deploying, ensure you have:
 
 - [ ] MongoDB Atlas database set up and configured
+- [ ] Firebase project created with Authentication enabled
 - [ ] All required API keys obtained (Groq, SerpAPI, Google OAuth - optional)
+- [ ] Firebase service account credentials downloaded (for backend)
+- [ ] Firebase web app config obtained (for frontend)
 - [ ] Email account configured for password reset (Gmail with App Password)
 - [ ] GitHub repository access
 - [ ] Vercel account (free tier works)
@@ -91,6 +94,11 @@ Before deploying, ensure you have:
    ENABLE_SOCKETS=true
    NODE_ENV=production
    
+   # Firebase Admin SDK (Required for Firebase Authentication)
+   FIREBASE_PROJECT_ID=your-firebase-project-id
+   FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+   FIREBASE_PRIVATE_KEY="your-firebase-private-key"
+   
    # Email (Required for password reset)
    EMAIL_USER=your-email@gmail.com
    EMAIL_PASSWORD=your-gmail-app-password
@@ -163,6 +171,12 @@ Before deploying, ensure you have:
    VITE_SOCKET_URL=https://your-backend-url.onrender.com
    VITE_API_BASE_URL=/api
    VITE_GOOGLE_CLIENT_ID=your-google-oauth-client-id
+   VITE_FIREBASE_API_KEY=your-firebase-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+   VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   VITE_FIREBASE_APP_ID=your-app-id
    ```
    Replace `your-backend-url.onrender.com` with your actual Render backend URL.
 
@@ -192,6 +206,12 @@ Before deploying, ensure you have:
    VITE_SOCKET_URL=https://your-backend-url.onrender.com
    VITE_API_BASE_URL=/api
    VITE_GOOGLE_CLIENT_ID=your-google-oauth-client-id
+   VITE_FIREBASE_API_KEY=your-firebase-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+   VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   VITE_FIREBASE_APP_ID=your-app-id
    ```
    
    **Important**: Replace `your-backend-url.onrender.com` with your actual Render URL!
@@ -269,7 +289,9 @@ Before deploying, ensure you have:
    - Copy your API key
    - Add to Render as `SERPAPI_KEY`
 
-### 4. Google OAuth (optional, for Google login)
+### 4. Google OAuth (optional, for legacy Google login)
+
+> **Note:** Google sign-in now primarily uses Firebase `signInWithPopup` with `GoogleAuthProvider`. The legacy Google OAuth flow below is only needed for backward compatibility.
 
 1. **Create Google Cloud Project**
    - Go to https://console.cloud.google.com/
@@ -288,6 +310,31 @@ Before deploying, ensure you have:
    - Authorized redirect URIs: Add `https://your-app.vercel.app/login`
    - Copy the Client ID
    - Add to Vercel as `VITE_GOOGLE_CLIENT_ID`
+
+### 5. Firebase Setup (Required for Authentication)
+
+1. **Create Firebase Project**
+   - Go to https://console.firebase.google.com/
+   - Click "Add project"
+   - Enter project name and follow the wizard
+
+2. **Enable Authentication Providers**
+   - Go to "Authentication" → "Sign-in method"
+   - Enable "Email/Password"
+   - Enable "Google" (select a support email)
+
+3. **Get Web App Config (Frontend)**
+   - Go to Project Settings → General → Your apps
+   - Click "Add app" → Web (</>) if not already added
+   - Copy the `firebaseConfig` values and set them as `VITE_FIREBASE_*` env vars on Vercel
+
+4. **Get Service Account Credentials (Backend)**
+   - Go to Project Settings → Service Accounts
+   - Click "Generate new private key"
+   - From the downloaded JSON, set on Render:
+     - `FIREBASE_PROJECT_ID` → `project_id`
+     - `FIREBASE_CLIENT_EMAIL` → `client_email`
+     - `FIREBASE_PRIVATE_KEY` → `private_key` (include the quotes, preserve newlines)
 
 ## 🎯 Post-Deployment Testing
 
@@ -483,6 +530,9 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 Before going live:
 
 - [ ] All environment variables set correctly
+- [ ] Firebase Authentication configured (Email/Password and Google providers enabled)
+- [ ] Firebase Admin SDK credentials set on backend
+- [ ] Firebase Client SDK config set on frontend
 - [ ] MongoDB Atlas secured (IP whitelist, strong passwords)
 - [ ] JWT secret is strong random string
 - [ ] CORS configured properly
@@ -522,8 +572,9 @@ Your HealthSync application should now be running in production:
 - ✅ Backend: `https://your-backend.onrender.com`
 - ✅ Database: MongoDB Atlas
 - ✅ Real-time: Socket.IO working
-- ✅ Authentication: JWT + bcrypt
-- ✅ Email: Password reset working
+- ✅ Authentication: Firebase Authentication + JWT
+- ✅ Email: Password reset via Firebase
 - ✅ AI Features: Groq + SerpAPI (if configured)
+- ✅ Chat History: Conversations persisted in MongoDB
 
 Happy deploying! 🚀

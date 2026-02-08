@@ -330,3 +330,35 @@ The HealthSync application can now be safely deployed to Vercel (frontend) and R
 *Last updated: 2026-02-08*
 *Fixed by: GitHub Copilot Agent*
 *Total time: ~2 hours of comprehensive bug fixing and testing*
+
+---
+
+## 🔥 Firebase Authentication Migration
+
+### Changes Made
+The authentication system has been migrated from a custom JWT-only flow to **Firebase Authentication**:
+
+- **Frontend**: Now uses `firebase` SDK — `signInWithEmailAndPassword`, `createUserWithEmailAndPassword`, and `signInWithPopup` (Google) via `GoogleAuthProvider`
+- **Backend**: Now uses `firebase-admin` SDK to verify Firebase ID tokens via a new `POST /api/auth/firebase` endpoint, which issues internal JWT tokens
+- **Google Sign-In**: Replaced Google Identity Services + PIN-based flow with Firebase `signInWithPopup` — no PIN required
+- **Password Reset**: Replaced custom OTP-based reset via Nodemailer with Firebase's `sendPasswordResetEmail`
+- **Chat History**: Added chat history persistence in MongoDB with full CRUD endpoints (`/api/chats`)
+- **Backward Compatibility**: Legacy `/api/auth/login` and `/api/auth/signup` endpoints still work
+
+### New Dependencies
+- `firebase-admin` (backend)
+- `firebase` (frontend)
+
+### New Environment Variables
+**Backend:**
+- `FIREBASE_PROJECT_ID` — Firebase project ID
+- `FIREBASE_CLIENT_EMAIL` — Firebase service account email
+- `FIREBASE_PRIVATE_KEY` — Firebase service account private key
+
+**Frontend:**
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
