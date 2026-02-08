@@ -69,7 +69,7 @@ router.get('/diagnosis', async (req, res) => {
     if (!requester) return res.status(401).json({ error: 'invalid requester' })
 
     const db = await getDb()
-    if (!db) return res.status(503).json({ diagnosis: [] })
+    if (!db) return res.json({ diagnosis: [] })
 
     // Find ALL patients that have diagnosis created by this doctor
     const cursor = db.collection('patients').find(

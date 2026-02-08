@@ -20,6 +20,7 @@ const patientsRouter = require('./routes/patients')
 const notificationsRouter = require('./routes/notifications')
 const groqRouter = require('./routes/groq')
 const chatsRouter = require('./routes/chats')
+const communityRouter = require('./routes/community')
 
 const app = express()
 const server = http.createServer(app)
@@ -148,6 +149,7 @@ app.use('/api/patients', patientsRouter)
 app.use('/api/notifications', notificationsRouter)
 app.use('/api/groq', groqRouter)
 app.use('/api/chats', chatsRouter)
+app.use('/api/community', communityRouter)
 
 // Health check endpoint for Render and keep-alive pings
 app.get('/health', (req, res) => {

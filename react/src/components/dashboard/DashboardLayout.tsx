@@ -140,7 +140,7 @@ export default function DashboardLayout() {
       try {
         const response = await authFetch('/api/notifications')
         if (!response.ok) {
-          console.error('Failed to fetch notifications:', response.statusText)
+          console.warn('Notifications unavailable:', response.status)
           return
         }
         
@@ -157,9 +157,8 @@ export default function DashboardLayout() {
         }))
         
         setAllNotifications(notifications)
-        console.log(`Loaded ${notifications.length} notifications from database`)
       } catch (error) {
-        console.error('Error fetching notifications:', error)
+        console.warn('Error fetching notifications:', error)
       }
     }
 

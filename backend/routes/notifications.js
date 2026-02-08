@@ -30,11 +30,22 @@ router.get('/', authenticateToken, async (req, res) => {
   try {
     const db = await getDb()
     if (!db) {
-      return res.status(500).json({ error: 'Database not available' })
+      // Return empty array instead of error when DB is unavailable
+      return res.json({ notifications: [] })
     }
 
     const userId = req.user.id || req.user.email
     
+    // Ensure the collection exists with an index
+    try {
+      await db.collection('notifications').createIndex({ userId: 1, timestamp: -1 })
+    } catch (indexErr) {
+      // Error code 85/86 means index already exists - that's fine
+      if (indexErr.code !== 85 && indexErr.code !== 86) {
+        console.warn('Could not create notifications index:', indexErr.message)
+      }
+    }
+
     // Get notifications for this user, sorted by newest first
     const notifications = await db.collection('notifications')
       .find({ userId })
@@ -55,7 +66,8 @@ router.get('/', authenticateToken, async (req, res) => {
     res.json({ notifications: formatted })
   } catch (err) {
     console.error('Error fetching notifications:', err)
-    res.status(500).json({ error: 'Failed to fetch notifications' })
+    // Return empty array on error to prevent frontend crash
+    res.json({ notifications: [] })
   }
 })
 
