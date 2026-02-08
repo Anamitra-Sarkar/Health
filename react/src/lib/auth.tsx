@@ -3,6 +3,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { wakeUpBackend } from './keepAlive'
+import {
+  auth as firebaseAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  signInWithPopup,
+  googleProvider,
+  sendPasswordResetEmail
+} from './firebase'
 
 type User = { id: string; email: string; role?: string; profile?: unknown } | null
 
@@ -10,11 +19,11 @@ type AuthContextType = {
   user: User
   loading: boolean
   login: (email: string, password: string, remember?: boolean) => Promise<User>
-  loginWithGoogle?: (credential: string, pin: string | undefined, setPinForFuture?: boolean, remember?: boolean) => Promise<User>
-  checkGoogleCredential?: (credential: string) => Promise<{ needPin: boolean; hasPin: boolean }>
+  loginWithGoogle?: (remember?: boolean) => Promise<User>
   signup: (payload: { email: string; password: string; role?: string; profile?: unknown }, remember?: boolean) => Promise<User>
   logout: () => Promise<void>
   authFetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>
+  resetPassword: (email: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -52,9 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let mounted = true
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
 
-  async function init() {
+    async function init() {
       setLoading(true)
       const token = getStoredToken()
       if (!token) {
@@ -84,48 +93,136 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function login(email: string, password: string, remember = false) {
     const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-    
+
     // Wake up backend if it's sleeping (Render free tier)
     await wakeUpBackend()
-    
-    const res = await fetch(`${API_BASE}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data?.error || 'Login failed')
-    const token: string | undefined = data?.token
-    if (token) storeToken(token, remember)
-    setUser(data.user || null)
-    return data.user || null
+
+    try {
+      // Authenticate with Firebase
+      const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password)
+      const idToken = await userCredential.user.getIdToken()
+
+      // Send Firebase ID token to our backend for verification and JWT issuance
+      const res = await fetch(`${API_BASE}/api/auth/firebase`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken, isSignup: false })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Login failed')
+      const token: string | undefined = data?.token
+      if (token) storeToken(token, remember)
+      setUser(data.user || null)
+      return data.user || null
+    } catch (err: unknown) {
+      // Handle Firebase-specific error codes with user-friendly messages
+      const firebaseError = err as { code?: string; message?: string }
+      if (firebaseError.code === 'auth/user-not-found' || firebaseError.code === 'auth/invalid-credential') {
+        throw new Error('Invalid email or password')
+      }
+      if (firebaseError.code === 'auth/wrong-password') {
+        throw new Error('Invalid email or password')
+      }
+      if (firebaseError.code === 'auth/too-many-requests') {
+        throw new Error('Too many failed attempts. Please try again later.')
+      }
+      if (firebaseError.code === 'auth/user-disabled') {
+        throw new Error('This account has been disabled.')
+      }
+      throw err
+    }
   }
 
-  async function loginWithGoogle(credential: string, pin?: string, setPinForFuture = false, remember = false) {
+  async function loginWithGoogle(remember = false) {
     const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-    const res = await fetch(`${API_BASE}/api/auth/google`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential, pin, setPinForFuture }) })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data?.error || 'Google login failed')
-    const token: string | undefined = data?.token
-    if (token) storeToken(token, remember)
-    setUser(data.user || null)
-    return data.user || null
-  }
 
-  async function checkGoogleCredential(credential: string) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-    const res = await fetch(`${API_BASE}/api/auth/google`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential }) })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data?.error || 'Failed')
-    return { needPin: data.needPin, hasPin: data.hasPin }
+    await wakeUpBackend()
+
+    try {
+      const result = await signInWithPopup(firebaseAuth, googleProvider)
+      const idToken = await result.user.getIdToken()
+
+      // Try login first
+      let res = await fetch(`${API_BASE}/api/auth/firebase`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken, isSignup: false })
+      })
+      let data = await res.json()
+
+      // If user not found, auto-signup as doctor
+      if (!res.ok && res.status === 401) {
+        const profile = {
+          name: result.user.displayName || '',
+          picture: result.user.photoURL || ''
+        }
+        res = await fetch(`${API_BASE}/api/auth/firebase`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken, isSignup: true, role: 'doctor', profile })
+        })
+        data = await res.json()
+      }
+
+      if (!res.ok) throw new Error(data?.error || 'Google login failed')
+      const token: string | undefined = data?.token
+      if (token) storeToken(token, remember)
+      setUser(data.user || null)
+      return data.user || null
+    } catch (err: unknown) {
+      const firebaseError = err as { code?: string; message?: string }
+      if (firebaseError.code === 'auth/popup-closed-by-user') {
+        throw new Error('Sign-in popup was closed')
+      }
+      throw err
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function signup(payload: { email: string; password: string; role?: string; profile?: any }, remember = false) {
     const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-    const res = await fetch(`${API_BASE}/api/auth/signup`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    const data = await res.json()
-    if (!res.ok) throw new Error(data?.error || 'Signup failed')
-    const token: string | undefined = data?.token
-    if (token) storeToken(token, remember)
-    setUser(data.user || null)
-    return data.user || null
+
+    await wakeUpBackend()
+
+    try {
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(firebaseAuth, payload.email, payload.password)
+      const idToken = await userCredential.user.getIdToken()
+
+      // Send Firebase ID token to our backend for user creation in MongoDB
+      const res = await fetch(`${API_BASE}/api/auth/firebase`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idToken,
+          isSignup: true,
+          role: payload.role || 'doctor',
+          profile: payload.profile || {}
+        })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || 'Signup failed')
+      const token: string | undefined = data?.token
+      if (token) storeToken(token, remember)
+      setUser(data.user || null)
+      return data.user || null
+    } catch (err: unknown) {
+      const firebaseError = err as { code?: string; message?: string }
+      if (firebaseError.code === 'auth/email-already-in-use') {
+        throw new Error('An account with this email already exists')
+      }
+      if (firebaseError.code === 'auth/weak-password') {
+        throw new Error('Password is too weak. Please use at least 6 characters.')
+      }
+      if (firebaseError.code === 'auth/invalid-email') {
+        throw new Error('Invalid email address')
+      }
+      throw err
+    }
+  }
+
+  async function resetPassword(email: string) {
+    await sendPasswordResetEmail(firebaseAuth, email)
   }
 
   async function logout() {
@@ -133,9 +230,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
       await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
     } catch (err) {
-      // non-fatal logout error (network, etc.)
-      // keep client state cleaned up regardless
-  console.warn('logout error', err)
+      console.warn('logout error', err)
+    }
+    try {
+      await firebaseSignOut(firebaseAuth)
+    } catch (err) {
+      console.warn('Firebase sign out error', err)
     }
     clearToken()
     setUser(null)
@@ -145,13 +245,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function authFetch(input: RequestInfo, init?: RequestInit) {
     const token = getStoredToken()
     const headers = { ...(init?.headers as Record<string, string> | undefined), ...(token ? { Authorization: `Bearer ${token}` } : {}) }
-  const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
+    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     const url = typeof input === 'string' && input.startsWith('/api') ? `${API_BASE}${input}` : input
     return fetch(url, { ...init, headers })
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, loginWithGoogle, checkGoogleCredential, signup, logout, authFetch }}>
+    <AuthContext.Provider value={{ user, loading, login, loginWithGoogle, signup, logout, authFetch, resetPassword }}>
       {children}
     </AuthContext.Provider>
   )

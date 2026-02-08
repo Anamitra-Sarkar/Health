@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { findByEmail, findById, createUser } = require('../lib/userStore')
 const getDb = require('../lib/mongo')
+const { getFirebaseAuth } = require('../lib/firebase')
 
 const router = express.Router()
 
@@ -90,6 +91,96 @@ router.post('/signup', async (req, res) => {
   } catch (err) {
     console.error('signup error', err)
     return res.status(500).json({ error: 'signup failed' })
+  }
+})
+
+// Firebase Authentication - verify Firebase ID token and issue JWT
+// This endpoint handles both login and signup via Firebase
+router.post('/firebase', async (req, res) => {
+  try {
+    const { idToken, role = 'doctor', profile = {}, isSignup = false } = req.body || {}
+    if (!idToken) return res.status(400).json({ error: 'Firebase ID token required' })
+
+    const firebaseAuth = getFirebaseAuth()
+    if (!firebaseAuth) {
+      return res.status(503).json({ error: 'Firebase authentication is not configured on the server' })
+    }
+
+    // Verify the Firebase ID token
+    let decodedToken
+    try {
+      decodedToken = await firebaseAuth.verifyIdToken(idToken)
+    } catch (err) {
+      console.error('Firebase token verification failed:', err.message)
+      return res.status(401).json({ error: 'Invalid or expired Firebase token' })
+    }
+
+    const email = decodedToken.email
+    if (!email) return res.status(400).json({ error: 'Firebase token does not contain an email' })
+
+    // Check if user exists in our database
+    let user = await findByEmail(email)
+
+    if (isSignup) {
+      // Signup flow
+      if (user) return res.status(409).json({ error: 'User already exists. Please login instead.' })
+
+      // Create user in our DB (use a random password since Firebase handles auth)
+      const randomPassword = require('crypto').randomBytes(32).toString('hex')
+      user = await createUser({ email, password: randomPassword, role, profile: { ...profile, firebaseUid: decodedToken.uid } })
+
+      // Handle organization creation for org role
+      if (role === 'organization') {
+        try {
+          const db = await getDb()
+          const orgName = profile?.organization || profile?.name || ''
+          if (db && orgName) {
+            const organizations = db.collection('organizations')
+            const slug = String(orgName).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+            const orgRes = await organizations.insertOne({ name: orgName, slug, admin: user.id, createdAt: new Date() })
+
+            try {
+              const usersCol = db.collection('users')
+              let filter = { id: user.id }
+              try { filter = { _id: new (require('mongodb').ObjectId)(user.id) } } catch (e) { filter = { id: user.id } }
+              await usersCol.updateOne(filter, { $set: { 'profile.organizationId': String(orgRes.insertedId) } })
+              user.profile = { ...(user.profile || {}), organizationId: String(orgRes.insertedId) }
+            } catch (e) {
+              console.warn('failed to link user to organization', e)
+            }
+          }
+        } catch (e) {
+          console.warn('organization save skipped', e)
+        }
+      }
+
+      const token = signToken(user)
+      return res.status(201).json({ token, user: { id: user.id, email: user.email, role: user.role, profile: user.profile } })
+    } else {
+      // Login flow
+      if (!user) return res.status(401).json({ error: 'No account found. Please sign up first.' })
+
+      // Update Firebase UID if not stored yet
+      if (!user.profile?.firebaseUid) {
+        try {
+          const db = await getDb()
+          if (db) {
+            const usersCol = db.collection('users')
+            let filter
+            try { filter = { _id: new (require('mongodb').ObjectId)(user.id) } } catch (e) { filter = { id: user.id } }
+            await usersCol.updateOne(filter, { $set: { 'profile.firebaseUid': decodedToken.uid } })
+          }
+        } catch (e) {
+          console.warn('failed to update Firebase UID', e)
+        }
+      }
+
+      const token = signToken(user)
+      return res.json({ token, user: { id: user.id, email: user.email, role: user.role, profile: user.profile } })
+    }
+  } catch (err) {
+    console.error('Firebase auth error:', err)
+    return res.status(500).json({ error: 'Firebase authentication failed' })
   }
 })
 
