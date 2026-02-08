@@ -20,7 +20,6 @@ async function getDb() {
       connectTimeoutMS: 5000,
       socketTimeoutMS: 5000,
       tls: true,
-      tlsMinVersion: 'TLSv1.2',
       retryWrites: true,
     })
     await client.connect()

@@ -60,7 +60,8 @@ router.get('/', optionalAuth, async (req, res) => {
   try {
     const db = await getDb()
     if (!db) {
-      return res.status(500).json({ error: 'Database not available' })
+      console.warn('Database unavailable - returning empty community posts array')
+      return res.json({ posts: [] })
     }
 
     const posts = await db.collection('community_posts')
