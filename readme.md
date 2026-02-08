@@ -370,7 +370,7 @@ npm start
 - Configure `FRONTEND_URL` for CORS
 - Enable `ENABLE_SOCKETS` for real-time features
 - Add `GROQ_API_KEY` for ICD-11 data
-- Add `SERPAPI_KEY` for reasearch papers on diseases
+- Add `SERPAPI_KEY` for research papers on diseases
 - Set Firebase Admin SDK vars: `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
 - Set Firebase Client SDK vars: `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID`
 
