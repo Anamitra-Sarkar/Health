@@ -9,6 +9,26 @@ Quick deploy (Render Dashboard):
 5. For "Environment", choose "Docker" so Render builds the provided `Dockerfile`.
 6. Service name: `Healthsync` (or pick another short name).
 7. (Optional) Add environment variables required by the app (e.g. `MONGO_URI`, any secrets).
+
+   **Required environment variables:**
+   ```env
+   MONGODB_URI=mongodb+srv://...
+   MONGODB_DB=healthsync
+   JWT_SECRET=<strong-random-secret>
+   PORT=4000
+   FRONTEND_URL=https://your-frontend-url
+   ENABLE_SOCKETS=true
+
+   # Firebase Admin SDK (Required for authentication)
+   FIREBASE_PROJECT_ID=your-firebase-project-id
+   FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+   FIREBASE_PRIVATE_KEY="your-firebase-private-key"
+
+   # Optional
+   GROQ_API_KEY=your-groq-api-key
+   SERPAPI_KEY=your-serpapi-key
+   ```
+
 8. Create the service — Render will build and deploy from the `Dockerfile`.
 
 Optional: Create the service via Render API

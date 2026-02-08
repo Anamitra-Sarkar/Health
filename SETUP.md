@@ -7,6 +7,7 @@ This guide explains how to set up and run the HealthSync application locally wit
 - Node.js 22.x or higher
 - npm or yarn package manager
 - MongoDB Atlas account (or local MongoDB instance)
+- Firebase project (for authentication)
 
 ## Environment Configuration
 
@@ -35,6 +36,11 @@ ENABLE_SOCKETS=true
 EMAIL_USER=<your-email@gmail.com>
 EMAIL_PASSWORD=<your-app-specific-password>
 
+# Firebase Admin SDK (Required for Firebase Authentication)
+FIREBASE_PROJECT_ID=<your-firebase-project-id>
+FIREBASE_CLIENT_EMAIL=<your-firebase-client-email>
+FIREBASE_PRIVATE_KEY="<your-firebase-private-key>"
+
 # AI Integration (Optional - Required for disease information features)
 GROQ_API_KEY=<your-groq-api-key>
 SERPAPI_KEY=<your-serpapi-key>
@@ -46,6 +52,7 @@ SERPAPI_KEY=<your-serpapi-key>
 - For email functionality, use Gmail with an App Password (not your regular password)
   - Enable 2FA on your Google account
   - Generate an App Password at: https://myaccount.google.com/apppasswords
+- Get Firebase service account credentials from: Firebase Console → Project Settings → Service Accounts → Generate New Private Key
 - Get `GROQ_API_KEY` from: https://console.groq.com/
 - Get `SERPAPI_KEY` from: https://serpapi.com/
 - The `.env` file is gitignored for security. Never commit credentials to version control.
@@ -60,15 +67,24 @@ VITE_API_URL=http://localhost:4000
 VITE_SOCKET_URL=http://localhost:4000
 VITE_API_BASE_URL=/api
 
-# Google OAuth (Optional - Only if using Google login)
+# Google OAuth (Optional - Only if using legacy Google login)
 VITE_GOOGLE_CLIENT_ID=<your-google-oauth-client-id>
+
+# Firebase Client SDK (Required for Firebase Authentication)
+VITE_FIREBASE_API_KEY=<your-firebase-api-key>
+VITE_FIREBASE_AUTH_DOMAIN=<your-project>.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=<your-firebase-project-id>
+VITE_FIREBASE_STORAGE_BUCKET=<your-project>.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=<your-sender-id>
+VITE_FIREBASE_APP_ID=<your-app-id>
 ```
 
 These settings point the frontend to your local backend server.
 
 **Note:** 
-- `VITE_GOOGLE_CLIENT_ID` is only needed if you want to enable Google OAuth login
+- `VITE_GOOGLE_CLIENT_ID` is only needed if you want to enable legacy Google OAuth login
 - Get your Google OAuth Client ID from: https://console.cloud.google.com/apis/credentials
+- Firebase config values can be found in your Firebase Console under Project Settings → General → Your apps
 
 ## Installation Steps
 
@@ -96,6 +112,11 @@ ENABLE_SOCKETS=true
 EMAIL_USER=<your-email@gmail.com>
 EMAIL_PASSWORD=<your-app-specific-password>
 
+# Firebase Admin SDK
+FIREBASE_PROJECT_ID=<your-firebase-project-id>
+FIREBASE_CLIENT_EMAIL=<your-firebase-client-email>
+FIREBASE_PRIVATE_KEY="<your-firebase-private-key>"
+
 # AI Integration (optional)
 GROQ_API_KEY=<your-groq-api-key>
 SERPAPI_KEY=<your-serpapi-key>
@@ -112,6 +133,12 @@ VITE_API_URL=http://localhost:4000
 VITE_SOCKET_URL=http://localhost:4000
 VITE_API_BASE_URL=/api
 VITE_GOOGLE_CLIENT_ID=<your-google-oauth-client-id>
+VITE_FIREBASE_API_KEY=<your-firebase-api-key>
+VITE_FIREBASE_AUTH_DOMAIN=<your-project>.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=<your-firebase-project-id>
+VITE_FIREBASE_STORAGE_BUCKET=<your-project>.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=<your-sender-id>
+VITE_FIREBASE_APP_ID=<your-app-id>
 EOF
 ```
 
@@ -154,7 +181,9 @@ The frontend will start on `http://localhost:3000`
 ## Features Enabled
 
 - ✅ **MongoDB Connection**: Configured to connect to MongoDB Atlas
-- ✅ **JWT Authentication**: Secure token-based authentication for login/signup
+- ✅ **Firebase Authentication**: Firebase-based login, signup, and Google sign-in
+- ✅ **JWT Authentication**: Secure token-based authentication issued after Firebase verification
+- ✅ **Chat History**: AI chat conversations persisted in MongoDB
 - ✅ **Real-time Socket.IO**: Enabled for live notifications and updates
 - ✅ **CORS**: Configured to allow frontend-backend communication
 - ✅ **API Endpoints**: All REST API routes available
@@ -202,5 +231,5 @@ Make sure:
 - **Backend**: Express.js server with Socket.IO for real-time features
 - **Frontend**: React with Vite for fast development
 - **Database**: MongoDB Atlas for data persistence
-- **Authentication**: JWT tokens with bcrypt password hashing
+- **Authentication**: Firebase Authentication (client SDK) + JWT tokens issued by backend after Firebase token verification, with bcrypt password hashing for legacy endpoints
 - **Real-time**: Socket.IO for live notifications and updates

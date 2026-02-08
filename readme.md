@@ -8,9 +8,15 @@
 ## ✨ Features
 
 - **Multi-Role Authentication System**
-  - Secure JWT-based authentication
+  - Firebase Authentication (Email/Password and Google sign-in)
+  - JWT-based session tokens issued after Firebase token verification
   - Role-based access control (Organizations & Doctors)
   - Session management with auto-keep-alive
+
+- **AI Chat History Persistence**
+  - Chat conversations with the AI assistant are saved in MongoDB
+  - Load and continue previous conversations
+  - Full CRUD support for chat history
 
 - **Intelligent Patient Management**
   - Create and manage patient records
@@ -138,13 +144,14 @@
 - **Routing:** React Router v7
 - **Animations:** Framer Motion, GSAP
 - **UI Components:** Radix UI
+- **Authentication:** Firebase Client SDK
 - **Real-time:** Socket.IO Client
 
 #### Backend
 - **Runtime:** Node.js 22
 - **Framework:** Express.js
 - **Database:** MongoDB
-- **Authentication:** JWT + bcrypt
+- **Authentication:** Firebase Admin SDK + JWT + bcrypt
 - **Real-time:** Socket.IO Server
 - **AI Integration:** Groq API
 - **External APIs:** WHO ICD-11 Clinical Tables + SerpaAI for research papers
@@ -193,6 +200,11 @@
    # Authentication
    JWT_SECRET=your-jwt-key
    
+   # Firebase Admin SDK (Required for Firebase Authentication)
+   FIREBASE_PROJECT_ID=your-firebase-project-id
+   FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+   FIREBASE_PRIVATE_KEY="your-firebase-private-key"
+   
    # Server
    PORT=4000
    FRONTEND_URL=http://localhost:3000
@@ -208,6 +220,14 @@
    ```env
    VITE_API_URL=http://localhost:4000
    VITE_SOCKET_URL=http://localhost:4000
+   
+   # Firebase Client SDK (Required for Firebase Authentication)
+   VITE_FIREBASE_API_KEY=your-firebase-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+   VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   VITE_FIREBASE_APP_ID=your-app-id
    ```
 
 4. **Start the development servers**
@@ -255,12 +275,22 @@
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| `POST` | `/api/auth/signup` | Create new account (Doctor/Organization) | ❌ |
-| `POST` | `/api/auth/login` | Authenticate user and receive JWT token | ❌ |
+| `POST` | `/api/auth/signup` | Create new account (Doctor/Organization) — legacy | ❌ |
+| `POST` | `/api/auth/login` | Authenticate user and receive JWT token — legacy | ❌ |
+| `POST` | `/api/auth/firebase` | Verify Firebase ID token and issue JWT | ❌ |
 | `GET` | `/api/auth/me` | Get current authenticated user profile | ✅ |
 | `POST` | `/api/auth/logout` | Logout user and invalidate session | ✅ |
-| `POST` | `/api/auth/forgot-password` | Request password recovery email | ❌ |
-| `POST` | `/api/auth/reset-password` | Reset password with recovery token | ❌ |
+| `POST` | `/api/auth/forgot-password` | Send password reset email via Firebase | ❌ |
+
+### Chat History
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/api/chats` | List all chat conversations for current user | ✅ |
+| `GET` | `/api/chats/:id` | Get a specific chat conversation | ✅ |
+| `POST` | `/api/chats` | Create a new chat conversation | ✅ |
+| `PUT` | `/api/chats/:id` | Update an existing chat conversation | ✅ |
+| `DELETE` | `/api/chats/:id` | Delete a chat conversation | ✅ |
 
 ### Patients
 
@@ -304,6 +334,7 @@
 
 ## 🔐 Security Features
 
+- **Firebase Token Verification:** Backend validates Firebase ID tokens via Firebase Admin SDK
 - **Password Hashing:** bcrypt with salt rounds
 - **JWT Tokens:** 7-day expiration with secure signing
 - **CORS Protection:** Configured for production
@@ -339,7 +370,9 @@ npm start
 - Configure `FRONTEND_URL` for CORS
 - Enable `ENABLE_SOCKETS` for real-time features
 - Add `GROQ_API_KEY` for ICD-11 data
-- Add `SERPAPI_KEY` for reasearch papers on diseases
+- Add `SERPAPI_KEY` for research papers on diseases
+- Set Firebase Admin SDK vars: `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
+- Set Firebase Client SDK vars: `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_APP_ID`
 
 ## 🧪 Development
 

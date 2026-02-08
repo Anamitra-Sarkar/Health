@@ -2,6 +2,32 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## HealthSync Frontend
+
+The HealthSync frontend uses **Firebase Client SDK** (`firebase` package) for authentication:
+
+- **Email/Password login**: `signInWithEmailAndPassword`, `createUserWithEmailAndPassword`
+- **Google sign-in**: `signInWithPopup` with `GoogleAuthProvider` (no PIN required)
+- **Password reset**: `sendPasswordResetEmail` via Firebase
+- **Chat history**: The Chatbot component shows saved chat history and allows loading previous conversations
+
+### Firebase Environment Variables
+
+The following `VITE_FIREBASE_*` variables must be set in `react/.env` (or `.env.production`):
+
+```env
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
+```
+
+These values are available in the Firebase Console under Project Settings → General → Your apps.
+
+## Vite Plugins
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
