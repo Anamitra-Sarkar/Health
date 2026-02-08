@@ -50,8 +50,6 @@ export default function Home() {
           element.scrollIntoView({ behavior: 'smooth' });
         }
       }, 100);
-      // Clear the state so subsequent navigations don't re-scroll
-      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
 

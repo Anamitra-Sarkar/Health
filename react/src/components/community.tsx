@@ -116,8 +116,8 @@ export function Community() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {displayPosts.slice(0, 6).map((post, index) => (
-              <div key={post.id || index}>
+            {displayPosts.slice(0, 6).map((post) => (
+              <div key={post.id}>
                 <Card className="p-8 lg:p-10 bg-card/98 backdrop-blur-sm border border-border/60 hover:border-border/80 hover:shadow-2xl hover:shadow-primary/8 transition-all duration-300 rounded-2xl group">
                   <div className="flex gap-1 mb-6">
                     {Array.from({ length: post.rating }).map((_, i) => (

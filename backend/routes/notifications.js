@@ -39,8 +39,11 @@ router.get('/', authenticateToken, async (req, res) => {
     // Ensure the collection exists with an index
     try {
       await db.collection('notifications').createIndex({ userId: 1, timestamp: -1 })
-    } catch {
-      // Index may already exist, ignore
+    } catch (indexErr) {
+      // Error code 85/86 means index already exists - that's fine
+      if (indexErr.code !== 85 && indexErr.code !== 86) {
+        console.warn('Could not create notifications index:', indexErr.message)
+      }
     }
 
     // Get notifications for this user, sorted by newest first
