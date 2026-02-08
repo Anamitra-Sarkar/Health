@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { SocketContext } from './socketContext'
+import { SOCKET_BASE_URL } from './config'
 
 interface SocketProviderProps {
   children: ReactNode
@@ -26,7 +27,7 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
 
     // Connect to Socket.IO server with authentication
     // Use Render backend for Socket.IO, separate from Vercel API
-    const SOCKET_URL = (import.meta.env.VITE_SOCKET_URL as string) || (import.meta.env.VITE_API_URL as string) || 'http://localhost:4000'
+    const SOCKET_URL = SOCKET_BASE_URL
     
     console.log('Connecting to Socket.IO at:', SOCKET_URL)
     

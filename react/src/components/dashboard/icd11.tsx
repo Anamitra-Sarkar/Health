@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react"
 import { Search, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { API_BASE_URL } from "@/lib/config"
 
 type ICDItem = {
 	id: string
@@ -136,10 +137,8 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 		const diseaseName = selectedItem?.title || icdCode
 		
 		try {
-			const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-			
 			// Call backend Gemini API endpoint
-			const response = await fetch(`${API_BASE}/api/groq/disease-info`, {
+			const response = await fetch(`${API_BASE_URL}/api/groq/disease-info`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -202,9 +201,7 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 		const searchQuery = `${diseaseName} ${icdCode} medical research treatment diagnosis`
 		
 		try {
-			const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-			
-			const response = await fetch(`${API_BASE}/api/groq/research-papers`, {
+			const response = await fetch(`${API_BASE_URL}/api/groq/research-papers`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -635,4 +632,3 @@ export default function ICD11Sidebar({ onSelectAction }: { onSelectAction?: (ite
 		</Card>
 	)
 }
-

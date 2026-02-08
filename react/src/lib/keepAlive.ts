@@ -5,7 +5,9 @@
  * Pinging every 2 minutes ensures server stays warm
  */
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || ''
+import { API_BASE_URL } from './config'
+
+const BACKEND_URL = API_BASE_URL
 const HEALTH_ENDPOINT = '/health'
 
 let lastPingTime = 0

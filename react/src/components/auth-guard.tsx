@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type PropsWithChildren } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../lib/config'
 
 export default function AuthGuard({ children }: PropsWithChildren) {
   const navigate = useNavigate()
@@ -19,8 +20,7 @@ export default function AuthGuard({ children }: PropsWithChildren) {
         }
 
         // Validate token server-side (use relative URL so Vite proxy handles it)
-        const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-        const res = await fetch(`${API_BASE}/api/auth/me`, {
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!res.ok) {
