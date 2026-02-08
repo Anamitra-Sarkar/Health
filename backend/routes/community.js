@@ -2,6 +2,18 @@ const express = require('express')
 const router = express.Router()
 const getDb = require('../lib/mongo')
 const { ObjectId } = require('mongodb')
+const rateLimit = require('express-rate-limit')
+
+// Rate limiter for community endpoints
+const communityLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' }
+})
+
+router.use(communityLimiter)
 
 // Middleware to verify JWT token
 function authenticateToken(req, res, next) {
