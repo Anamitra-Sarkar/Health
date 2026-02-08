@@ -31,24 +31,14 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:4173', // Vite preview port
   'http://localhost:5173', // Vite default dev port
-]
-
-// Add FRONTEND_URL if set (production or custom)
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL)
-}
-
-// Always allow default production Vercel URLs
-const defaultVercelUrls = [
   'https://healthsync-react.vercel.app',
   'https://health-bice-rho.vercel.app'
 ]
 
-defaultVercelUrls.forEach(url => {
-  if (!allowedOrigins.includes(url)) {
-    allowedOrigins.push(url)
-  }
-})
+// Add FRONTEND_URL if set (production or custom)
+if (process.env.FRONTEND_URL && !allowedOrigins.includes(process.env.FRONTEND_URL)) {
+  allowedOrigins.push(process.env.FRONTEND_URL)
+}
 
 console.log('CORS enabled for origins:', allowedOrigins)
 
