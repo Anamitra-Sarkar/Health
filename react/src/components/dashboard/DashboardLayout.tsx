@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   const [toastNotifications, setToastNotifications] = useState<Notification[]>([]) // Auto-closing toasts
   const { socket, isConnected } = useSocket()
   const { authFetch } = useAuth()
-  const [isDark, setIsDark] = useState<boolean>(false);
+  const [_isDark, setIsDark] = useState<boolean>(false);
   useEffect(() => {
     const checkTheme = () => {
       const isDarkMode = document.documentElement.classList.contains('dark');

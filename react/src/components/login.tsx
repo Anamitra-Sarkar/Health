@@ -158,20 +158,21 @@ export function Login() {
 		}
 	}, [auth])
 
-	async function godummy(e: React.MouseEvent) {
-		e.preventDefault()
-		setError(null)
-		setLoading(true)
-		try {
-			await auth.login("test@gmail.com", "testacc", false);
-			navigate('/dashboard')
-		} catch (err: unknown) {
-			const msg = err instanceof Error ? err.message : String(err)
-			setError(msg || 'Sign in failed')
-		} finally {
-			setLoading(false)
-		}
-	}
+	// Demo/test login function - unused in production
+	// async function _godummy(e: React.MouseEvent) {
+	// 	e.preventDefault()
+	// 	setError(null)
+	// 	setLoading(true)
+	// 	try {
+	// 		await auth.login("test@gmail.com", "testacc", false);
+	// 		navigate('/dashboard')
+	// 	} catch (err: unknown) {
+	// 		const msg = err instanceof Error ? err.message : String(err)
+	// 		setError(msg || 'Sign in failed')
+	// 	} finally {
+	// 		setLoading(false)
+	// 	}
+	// }
 
 	async function handleGooglePinSubmit(e?: React.FormEvent) {
 		e?.preventDefault()
