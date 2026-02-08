@@ -225,21 +225,16 @@ Before deploying, ensure you have:
 
 ### Step 3: Update Backend CORS
 
-1. **Go back to Render**
-   - Open your backend service settings
-   - Update `FRONTEND_URL` environment variable
-   - Set it to your Vercel URL: `https://your-app.vercel.app`
-   - This allows CORS and Socket.IO to work properly
-
-2. **Configure FRONTEND_URLS** (New, recommended)
-   - Instead of (or in addition to) `FRONTEND_URL`, you can now set `FRONTEND_URLS`
+1. **Configure FRONTEND_URLS** (Required)
+   - In Render backend service settings, set the `FRONTEND_URLS` environment variable
    - This environment variable accepts **comma-separated** frontend origins
    - Example: `FRONTEND_URLS=https://your-app.vercel.app,https://your-custom-domain.com`
    - The backend will automatically allow CORS and Socket.IO connections from all listed origins
    - **Why this matters**: Prevents Socket.IO handshake rejections and allows multiple deployment environments
    - If not set, the backend falls back to the hardcoded default (`https://health-bice-rho.vercel.app`)
+   - **Note**: This replaces any previous `FRONTEND_URL` variable if you were using it
 
-3. **Redeploy Backend** (if needed)
+2. **Redeploy Backend** (if needed)
    - Render will auto-redeploy when you change environment variables
    - Or manually trigger redeploy
 
