@@ -231,11 +231,39 @@ Before deploying, ensure you have:
    - Set it to your Vercel URL: `https://your-app.vercel.app`
    - This allows CORS and Socket.IO to work properly
 
-2. **Redeploy Backend** (if needed)
+2. **Configure FRONTEND_URLS** (New, recommended)
+   - Instead of (or in addition to) `FRONTEND_URL`, you can now set `FRONTEND_URLS`
+   - This environment variable accepts **comma-separated** frontend origins
+   - Example: `FRONTEND_URLS=https://your-app.vercel.app,https://your-custom-domain.com`
+   - The backend will automatically allow CORS and Socket.IO connections from all listed origins
+   - **Why this matters**: Prevents Socket.IO handshake rejections and allows multiple deployment environments
+   - If not set, the backend falls back to the hardcoded default (`https://health-bice-rho.vercel.app`)
+
+3. **Redeploy Backend** (if needed)
    - Render will auto-redeploy when you change environment variables
    - Or manually trigger redeploy
 
-### Step 4: Verify Frontend
+### Step 4: Important Environment Variable Notes
+
+**Frontend Environment Variables (Vercel)**
+- `VITE_API_URL`: The full URL of your backend (e.g., `https://your-backend.onrender.com`)
+- `VITE_SOCKET_URL`: The Socket.IO URL, typically same as `VITE_API_URL` (optional, defaults to `VITE_API_URL`)
+- These variables are **required** for the frontend to connect to your backend
+- Without them, the app falls back to hardcoded defaults which may not match your deployment
+
+**Backend Environment Variables (Render)**
+- `FRONTEND_URLS`: Comma-separated list of allowed frontend origins for CORS and Socket.IO
+- Example: `FRONTEND_URLS=https://healthsync.vercel.app,https://healthsync-preview.vercel.app`
+- **Important**: Include all frontend URLs where your app is deployed (production, preview, custom domains)
+- Omit this variable to use the default hardcoded origin
+
+**Why These Matter**
+- The frontend uses `VITE_API_URL` and `VITE_SOCKET_URL` to know where to send API requests
+- The backend uses `FRONTEND_URLS` to determine which origins are allowed to connect
+- Mismatch between these causes CORS errors and Socket.IO connection failures
+- Setting these correctly ensures seamless deployment across different environments
+
+### Step 5: Verify Frontend
 
 1. **Open Your Vercel URL**
    - Visit `https://your-app.vercel.app`

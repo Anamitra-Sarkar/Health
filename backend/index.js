@@ -29,10 +29,20 @@ const JWT_SECRET = process.env.JWT_SECRET
 
 app.set('trust proxy', 1)
 
-// CORS configuration - allow the hardcoded frontend URL only
-const allowedOrigins = new Set([
+// CORS configuration - configurable via FRONTEND_URLS environment variable
+// Falls back to the existing hardcoded default for backwards compatibility
+const defaultOrigins = [
   'https://health-bice-rho.vercel.app'
-])
+]
+
+// Parse FRONTEND_URLS from environment (comma-separated list)
+const envOrigins = (process.env.FRONTEND_URLS || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean)
+
+// Merge environment origins with defaults (deduplicated via Set)
+const allowedOrigins = new Set([...envOrigins, ...defaultOrigins])
 
 console.log('CORS enabled for origins:', Array.from(allowedOrigins))
 
