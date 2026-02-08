@@ -17,17 +17,37 @@ The application requires environment variables for both backend and frontend.
 A `.env` file needs to be created in the `backend/` directory with the following configuration:
 
 ```env
+# Database Configuration (Required)
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?appName=<appName>
 MONGODB_DB=healthsync
+
+# Authentication (Required)
 JWT_SECRET=<your-secure-random-secret-key>
+
+# Server Configuration (Required)
 PORT=4000
 FRONTEND_URL=http://localhost:3000
+
+# Real-time Features (Required)
 ENABLE_SOCKETS=true
+
+# Email Configuration (Required for password reset feature)
+EMAIL_USER=<your-email@gmail.com>
+EMAIL_PASSWORD=<your-app-specific-password>
+
+# AI Integration (Optional - Required for disease information features)
+GROQ_API_KEY=<your-groq-api-key>
+SERPAPI_KEY=<your-serpapi-key>
 ```
 
 **Important:** 
 - Replace `<username>`, `<password>`, `<cluster>`, and `<appName>` with your MongoDB Atlas credentials
 - Generate a secure random string for `JWT_SECRET` (e.g., using `openssl rand -hex 32`)
+- For email functionality, use Gmail with an App Password (not your regular password)
+  - Enable 2FA on your Google account
+  - Generate an App Password at: https://myaccount.google.com/apppasswords
+- Get `GROQ_API_KEY` from: https://console.groq.com/
+- Get `SERPAPI_KEY` from: https://serpapi.com/
 - The `.env` file is gitignored for security. Never commit credentials to version control.
 
 ### Frontend Environment Variables
@@ -35,12 +55,20 @@ ENABLE_SOCKETS=true
 A `.env` file needs to be created in the `react/` directory for local development:
 
 ```env
+# Backend API Configuration (Required)
 VITE_API_URL=http://localhost:4000
 VITE_SOCKET_URL=http://localhost:4000
 VITE_API_BASE_URL=/api
+
+# Google OAuth (Optional - Only if using Google login)
+VITE_GOOGLE_CLIENT_ID=<your-google-oauth-client-id>
 ```
 
 These settings point the frontend to your local backend server.
+
+**Note:** 
+- `VITE_GOOGLE_CLIENT_ID` is only needed if you want to enable Google OAuth login
+- Get your Google OAuth Client ID from: https://console.cloud.google.com/apis/credentials
 
 ## Installation Steps
 
@@ -50,12 +78,27 @@ These settings point the frontend to your local backend server.
 ```bash
 cd backend
 cat > .env << 'EOF'
+# Database Configuration
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?appName=<appName>
 MONGODB_DB=healthsync
+
+# Authentication
 JWT_SECRET=<your-secure-random-secret-key>
+
+# Server Configuration
 PORT=4000
 FRONTEND_URL=http://localhost:3000
+
+# Real-time Features
 ENABLE_SOCKETS=true
+
+# Email Configuration (for password reset)
+EMAIL_USER=<your-email@gmail.com>
+EMAIL_PASSWORD=<your-app-specific-password>
+
+# AI Integration (optional)
+GROQ_API_KEY=<your-groq-api-key>
+SERPAPI_KEY=<your-serpapi-key>
 EOF
 ```
 
@@ -68,6 +111,7 @@ cat > .env << 'EOF'
 VITE_API_URL=http://localhost:4000
 VITE_SOCKET_URL=http://localhost:4000
 VITE_API_BASE_URL=/api
+VITE_GOOGLE_CLIENT_ID=<your-google-oauth-client-id>
 EOF
 ```
 

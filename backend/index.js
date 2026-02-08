@@ -105,11 +105,20 @@ if (ENABLE_SOCKETS) {
 app.set('io', io)
 app.set('userSockets', userSockets)
 
+// CORS configuration - allow configured frontend URL and localhost for development
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost:3000',
+  'http://localhost:5173', // Vite default dev port
+]
+
+// Add production frontend URL if different from FRONTEND_URL
+if (process.env.FRONTEND_URL && !allowedOrigins.includes('https://healthsync-react.vercel.app')) {
+  allowedOrigins.push('https://healthsync-react.vercel.app')
+}
+
 app.use(cors({
-  origin: [
-    'https://healthsync-react.vercel.app',
-    'http://localhost:3000',
-  ],
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
