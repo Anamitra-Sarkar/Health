@@ -114,8 +114,10 @@ Before deploying, ensure you have:
    ```
 
    **Note about FRONTEND_URL:**
-   - You'll update this after deploying frontend
-   - For now, use a placeholder: `https://healthsync-temp.vercel.app`
+   - You'll update this after deploying frontend.
+   - For now, use a placeholder: `https://healthsync-temp.vercel.app`.
+   - If you have multiple frontend domains (custom domain + Vercel preview), provide a comma-separated list:
+     `FRONTEND_URL=https://healthsync.com,https://healthsync-temp.vercel.app`
 
 5. **Deploy**
    - Click "Create Web Service"

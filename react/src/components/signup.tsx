@@ -6,6 +6,7 @@ import { Input } from "./ui/input"
 import { Card } from "./ui/card"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from '../lib/auth'
+import { API_BASE_URL } from '../lib/config'
 import { Header } from "./header"
 import { Footer } from "./footer"
 import DarkVeil from './reactBit'
@@ -29,7 +30,7 @@ export function Signup() {
     let mounted = true
     async function loadOrgs() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/organizations`)
+        const res = await fetch(`${API_BASE_URL}/api/organizations`)
         console.log("organization",res);
         if (!res.ok) return
         const data = await res.json()

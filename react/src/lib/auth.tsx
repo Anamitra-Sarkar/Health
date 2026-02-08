@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { wakeUpBackend } from './keepAlive'
+import { API_BASE_URL } from './config'
 import {
   auth as firebaseAuth,
   signInWithEmailAndPassword,
@@ -61,8 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let mounted = true
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-
     async function init() {
       setLoading(true)
       const token = getStoredToken()
@@ -71,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return
       }
       try {
-        const res = await fetch(`${API_BASE}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
         if (!res.ok) {
           clearToken()
           if (mounted) setUser(null)
@@ -92,8 +91,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function login(email: string, password: string, remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-
     // Wake up backend if it's sleeping (Render free tier)
     await wakeUpBackend()
 
@@ -103,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const idToken = await userCredential.user.getIdToken()
 
       // Send Firebase ID token to our backend for verification and JWT issuance
-      const res = await fetch(`${API_BASE}/api/auth/firebase`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/firebase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken, isSignup: false })
@@ -134,8 +131,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function loginWithGoogle(remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-
     await wakeUpBackend()
 
     try {
@@ -143,7 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const idToken = await result.user.getIdToken()
 
       // Try login first
-      let res = await fetch(`${API_BASE}/api/auth/firebase`, {
+      let res = await fetch(`${API_BASE_URL}/api/auth/firebase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken, isSignup: false })
@@ -156,7 +151,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: result.user.displayName || '',
           picture: result.user.photoURL || ''
         }
-        res = await fetch(`${API_BASE}/api/auth/firebase`, {
+        res = await fetch(`${API_BASE_URL}/api/auth/firebase`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ idToken, isSignup: true, role: 'doctor', profile })
@@ -180,8 +175,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function signup(payload: { email: string; password: string; role?: string; profile?: any }, remember = false) {
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-
     await wakeUpBackend()
 
     try {
@@ -190,7 +183,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const idToken = await userCredential.user.getIdToken()
 
       // Send Firebase ID token to our backend for user creation in MongoDB
-      const res = await fetch(`${API_BASE}/api/auth/firebase`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/firebase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -227,8 +220,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function logout() {
     try {
-      const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-      await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
+      await fetch(`${API_BASE_URL}/api/auth/logout`, { method: 'POST' })
     } catch (err) {
       console.warn('logout error', err)
     }
@@ -245,8 +237,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function authFetch(input: RequestInfo, init?: RequestInit) {
     const token = getStoredToken()
     const headers = { ...(init?.headers as Record<string, string> | undefined), ...(token ? { Authorization: `Bearer ${token}` } : {}) }
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
-    const url = typeof input === 'string' && input.startsWith('/api') ? `${API_BASE}${input}` : input
+    const url = typeof input === 'string' && input.startsWith('/api') ? `${API_BASE_URL}${input}` : input
     return fetch(url, { ...init, headers })
   }
 

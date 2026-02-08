@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import AuthGuard from '@/components/auth-guard'
 import { useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '@/lib/config'
 
 export default function SettingsPage() {
    const navigate = useNavigate()
@@ -20,7 +21,6 @@ export default function SettingsPage() {
 
   useEffect(()=>{
     let mounted = true
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     
     async function func(){
       const token = typeof window !== 'undefined' ? (localStorage.getItem('hs_token') || sessionStorage.getItem('hs_token')) : null
@@ -32,7 +32,7 @@ export default function SettingsPage() {
 
       // Validate token server-side
       try{
-        const res = await fetch(`${API_BASE}/api/auth/me`, {
+        const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         
@@ -66,7 +66,7 @@ export default function SettingsPage() {
           // Fetch organization name if orgId exists and user is organization admin
           if (orgId && data.user.role === 'organization') {
             try {
-              const orgRes = await fetch(`${API_BASE}/api/organizations/${orgId}`, {
+              const orgRes = await fetch(`${API_BASE_URL}/api/organizations/${orgId}`, {
                 headers: { Authorization: `Bearer ${token}` },
               })
               if (orgRes.ok) {
@@ -102,14 +102,13 @@ export default function SettingsPage() {
       return
     }
 
-    const API_BASE = (import.meta.env.VITE_API_URL as string) || ''
     if (showMessage) {
       setIsSaving(true)
       setSaveStatus('idle')
     }
 
     try {
-      const res = await fetch(`${API_BASE}/api/auth/me`, {
+      const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
         method: 'PUT',
         headers: { 
           'Authorization': `Bearer ${token}`,
