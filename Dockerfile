@@ -2,6 +2,17 @@
 FROM node:22-alpine AS builder
 WORKDIR /workspace
 
+# Build args for Vite (Firebase client config, needed at build time)
+ARG VITE_FIREBASE_API_KEY
+ARG VITE_FIREBASE_AUTH_DOMAIN
+ARG VITE_FIREBASE_PROJECT_ID
+ARG VITE_FIREBASE_STORAGE_BUCKET
+ARG VITE_FIREBASE_MESSAGING_SENDER_ID
+ARG VITE_FIREBASE_APP_ID
+ARG VITE_FIREBASE_MEASUREMENT_ID
+ARG VITE_API_URL
+ARG VITE_SOCKET_URL
+
 # Install dependencies and build frontend
 COPY react/package.json react/package-lock.json ./react/
 COPY react/ ./react/
