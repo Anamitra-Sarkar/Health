@@ -60,7 +60,8 @@ router.get('/', optionalAuth, async (req, res) => {
   try {
     const db = await getDb()
     if (!db) {
-      return res.status(500).json({ error: 'Database not available' })
+      // Return empty array when database is not available instead of error
+      return res.json({ posts: [] })
     }
 
     const posts = await db.collection('community_posts')
@@ -83,7 +84,7 @@ router.get('/', optionalAuth, async (req, res) => {
     console.error('Error fetching community posts:', err)
     res.status(500).json({ error: 'Failed to fetch community posts' })
   }
-})
+}
 
 // POST /api/community - Create a new community post (authenticated)
 router.post('/', authenticateToken, async (req, res) => {
