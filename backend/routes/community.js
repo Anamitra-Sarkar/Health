@@ -55,41 +55,6 @@ function optionalAuth(req, res, next) {
   })
 }
 
-// Seed default testimonials if collection is empty
-async function seedCommunityPosts(db) {
-  const count = await db.collection('community_posts').countDocuments()
-  if (count === 0) {
-    const defaultPosts = [
-      {
-        authorName: 'Sarah M.',
-        authorRole: 'Clinic Administrator',
-        content: 'HealthSync EMR helped our clinic reduce documentation time and improve patient handoffs.',
-        rating: 5,
-        createdAt: new Date('2025-01-15'),
-        approved: true
-      },
-      {
-        authorName: 'James T.',
-        authorRole: 'Physician',
-        content: 'Integrations with labs and imaging streamlined our workflow and reduced turnaround.',
-        rating: 5,
-        createdAt: new Date('2025-02-01'),
-        approved: true
-      },
-      {
-        authorName: 'Emma L.',
-        authorRole: 'Nurse Manager',
-        content: 'Secure, easy-to-use EMR that supports our clinical workflows.',
-        rating: 5,
-        createdAt: new Date('2025-02-10'),
-        approved: true
-      }
-    ]
-    await db.collection('community_posts').insertMany(defaultPosts)
-    console.log('Seeded community_posts with default testimonials')
-  }
-}
-
 // GET /api/community - Get all approved community posts (public)
 router.get('/', optionalAuth, async (req, res) => {
   try {
@@ -97,8 +62,6 @@ router.get('/', optionalAuth, async (req, res) => {
     if (!db) {
       return res.status(500).json({ error: 'Database not available' })
     }
-
-    await seedCommunityPosts(db)
 
     const posts = await db.collection('community_posts')
       .find({ approved: true })

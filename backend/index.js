@@ -27,6 +27,8 @@ const server = http.createServer(app)
 const PORT = process.env.PORT || 4000
 const JWT_SECRET = process.env.JWT_SECRET
 
+app.set('trust proxy', 1)
+
 // CORS configuration - allow the hardcoded frontend URL only
 const allowedOrigins = new Set([
   'https://health-bice-rho.vercel.app'
