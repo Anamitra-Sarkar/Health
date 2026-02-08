@@ -254,7 +254,7 @@ export default function Header({ onSidebarToggle, notifications = [], onClearNot
 
           {/* Notification Dropdown */}
           {showNotifications && (
-            <div className="fixed md:absolute right-2 md:right-0 left-2 md:left-auto top-16 md:top-full mt-0 md:mt-2 w-auto md:w-80 lg:w-96 max-h-[calc(100vh-5rem)] md:max-h-[32rem] bg-popover/95 backdrop-blur-xl border border-border/50 rounded-lg shadow-2xl shadow-border/10 z-50 overflow-hidden flex flex-col">
+            <div className="fixed md:absolute right-2 md:right-0 left-2 md:left-auto top-16 md:top-full mt-0 md:mt-2 w-auto md:w-80 lg:w-96 max-h-[calc(100vh-5rem)] md:max-h-[32rem] bg-popover/95 backdrop-blur-xl border border-border/50 rounded-lg shadow-2xl shadow-border/10 z-[9999] overflow-hidden flex flex-col">
               {/* Header */}
               <div className="p-3 md:p-4 border-b border-border/50 flex items-center justify-between bg-muted/30">
                 <div>
