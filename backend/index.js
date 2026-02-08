@@ -26,6 +26,32 @@ const server = http.createServer(app)
 const PORT = process.env.PORT || 4000
 const JWT_SECRET = process.env.JWT_SECRET
 
+// CORS configuration - allow configured frontend URL and localhost for development
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4173', // Vite preview port
+  'http://localhost:5173', // Vite default dev port
+]
+
+// Add FRONTEND_URL if set (production or custom)
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL)
+}
+
+// Always allow default production Vercel URLs
+const defaultVercelUrls = [
+  'https://healthsync-react.vercel.app',
+  'https://health-bice-rho.vercel.app'
+]
+
+defaultVercelUrls.forEach(url => {
+  if (!allowedOrigins.includes(url)) {
+    allowedOrigins.push(url)
+  }
+})
+
+console.log('CORS enabled for origins:', allowedOrigins)
+
 // Socket.IO setup - only enable on Render (not Vercel serverless)
 const ENABLE_SOCKETS = process.env.ENABLE_SOCKETS === 'true'
 
@@ -37,7 +63,7 @@ if (ENABLE_SOCKETS) {
   
   io = new Server(server, {
     cors: {
-      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+      origin: allowedOrigins,
       methods: ['GET', 'POST'],
       credentials: true
     }
@@ -105,23 +131,6 @@ if (ENABLE_SOCKETS) {
 
 app.set('io', io)
 app.set('userSockets', userSockets)
-
-// CORS configuration - allow configured frontend URL and localhost for development
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:4173', // Vite preview port
-  'http://localhost:5173', // Vite default dev port
-]
-
-// Add FRONTEND_URL if set (production or custom)
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL)
-}
-
-// Always allow default production Vercel URL
-if (!allowedOrigins.includes('https://healthsync-react.vercel.app')) {
-  allowedOrigins.push('https://healthsync-react.vercel.app')
-}
 
 app.use(cors({
   origin: allowedOrigins,
