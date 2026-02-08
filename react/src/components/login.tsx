@@ -190,7 +190,7 @@ Remember me
 <Button type="submit" size="lg" className="w-full h-12 rounded-lg shadow-lg bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 transition-all duration-300 font-semibold" disabled={loading}>
 {loading ? "Signing in…" : "Sign in"}
 </Button>
-<p className="text-xs text-muted-foreground text-center">By continuing you agree to our <a href="#" className="text-primary hover:underline font-medium">Terms</a> and <a href="#" className="text-primary hover:underline font-medium">Privacy Policy</a>.</p>
+<p className="text-xs text-muted-foreground text-center">By continuing you agree to our <Link to="/about" className="text-primary hover:underline font-medium">Terms</Link> and <Link to="/about" className="text-primary hover:underline font-medium">Privacy Policy</Link>.</p>
 </div>
 
 <div className="space-y-4">

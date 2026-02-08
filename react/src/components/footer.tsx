@@ -1,5 +1,7 @@
 
 
+import { Link } from "react-router-dom"
+
 export function Footer() {
   return (
     <footer className="relative bg-gradient-to-br from-muted/60 via-background to-muted/40 border-t border-border/60 py-16">
@@ -27,22 +29,22 @@ export function Footer() {
             <h4 className="font-bold text-foreground mb-6 text-lg">Product</h4>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/" state={{ scrollTo: 'features' }} className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/about" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  Pricing
-                </a>
+                  About
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/dashboard/icd11" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  Integrations
-                </a>
+                  ICD-11 Codes
+                </Link>
               </li>
             </ul>
           </div>
@@ -51,46 +53,46 @@ export function Footer() {
             <h4 className="font-bold text-foreground mb-6 text-lg">Resources</h4>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/about" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   Documentation
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/" state={{ scrollTo: 'community' }} className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  API Reference
-                </a>
+                  Community
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/about" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   Support
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-foreground mb-6 text-lg">Legal</h4>
+            <h4 className="font-bold text-foreground mb-6 text-lg">Account</h4>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/login" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  Privacy
-                </a>
+                  Sign In
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/signup" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  Terms
-                </a>
+                  Create Account
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
+                <Link to="/dashboard/settings" className="hover:text-primary transition-colors duration-300 flex items-center gap-2 group">
                   <div className="w-1 h-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  Contact Sales
-                </a>
+                  Settings
+                </Link>
               </li>
             </ul>
           </div>

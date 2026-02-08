@@ -5,6 +5,8 @@ import { Users, MessageCircle, BookOpen, Shield, Heart, Activity, Stethoscope, P
 import { motion } from "framer-motion"
 
 import { useRef, useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../lib/auth"
 import { Card } from "./ui/card"
 // import DarkVeil from "./reactBit"
 
@@ -57,6 +59,8 @@ const features = [
 export function Hero() {
   const containerRef = useRef(null)
   const [, setIsMobile] = useState(false)
+  const navigate = useNavigate()
+  const { user, loading: authLoading } = useAuth()
 
   // State for ICD-11 API data and UI states
   const [query, _setQuery] = useState("")
@@ -428,7 +432,11 @@ export function Hero() {
                   <Button 
                     size="lg" 
                     className="relative bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-8 py-6 text-lg shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 animate-glow-pulse animate-wave-pulse"
-                    onClick={() => window.location.href = '/dashboard'}
+                    onClick={() => {
+                      if (authLoading) return
+                      if (user) navigate('/dashboard')
+                      else navigate('/login')
+                    }}
                   >
                     Go to Dashboard
                   </Button>
@@ -436,7 +444,7 @@ export function Hero() {
                     variant="outline" 
                     size="lg" 
                     className="border-2 border-foreground/20 dark:border-foreground/30 px-8 py-6 text-lg hover:bg-foreground/5 dark:hover:bg-foreground/10"
-                    onClick={() => window.location.href = '/about'}
+                    onClick={() => navigate('/about')}
                   >
                     Read about us
                   </Button>

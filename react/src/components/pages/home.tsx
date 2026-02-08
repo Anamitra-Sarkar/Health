@@ -5,10 +5,12 @@ import { Header } from "../header";
 import { Hero } from "../hero";
 import DarkVeil from "../reactBit";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 
 export default function Home() {
   const [isDark, setIsDark] = useState<boolean>(false);
+  const location = useLocation();
 
   // Monitor theme changes
   useEffect(() => {
@@ -36,6 +38,22 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Handle scroll-to-section when navigating from other pages
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null;
+    if (state?.scrollTo) {
+      // Small delay to allow the page to render before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(state.scrollTo!);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      // Clear the state so subsequent navigations don't re-scroll
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   return (
     <main className="min-h-screen bg-background relative">

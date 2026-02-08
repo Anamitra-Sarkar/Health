@@ -3,8 +3,22 @@
 import { Button } from "./ui/button"
 import { ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../lib/auth"
 
 export function CTA() {
+  const navigate = useNavigate()
+  const { user, loading } = useAuth()
+
+  const handleDashboardClick = () => {
+    if (loading) return
+    if (user) {
+      navigate('/dashboard')
+    } else {
+      navigate('/login')
+    }
+  }
+
   return (
     <section className="relative py-20 md:py-32 bg-gradient-to-br from-primary/8 via-accent/8 to-secondary/8 overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.08]"></div>
@@ -31,11 +45,11 @@ export function CTA() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="relative px-8 py-4 h-14 text-lg font-semibold bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl hover:shadow-emerald-500/25 transition-all duration-300 rounded-xl group animate-glow-pulse animate-wave-pulse" onClick={() => window.location.href = '/dashboard'}>
+            <Button size="lg" className="relative px-8 py-4 h-14 text-lg font-semibold bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-600 hover:to-teal-500 text-white shadow-lg hover:shadow-xl hover:shadow-emerald-500/25 transition-all duration-300 rounded-xl group animate-glow-pulse animate-wave-pulse" onClick={handleDashboardClick}>
               Go to Dashboard
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Button>
-            <Button variant="outline" size="lg" className="relative px-8 py-4 h-14 text-lg font-semibold border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 rounded-xl animate-wave-pulse" style={{ '--animation-delay': '0.2s' } as React.CSSProperties} onClick={() => window.location.href = '/about'}>
+            <Button variant="outline" size="lg" className="relative px-8 py-4 h-14 text-lg font-semibold border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 rounded-xl animate-wave-pulse" style={{ '--animation-delay': '0.2s' } as React.CSSProperties} onClick={() => navigate('/about')}>
               Learn More
             </Button>
           </div>
