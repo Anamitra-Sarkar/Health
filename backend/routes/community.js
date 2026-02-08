@@ -84,7 +84,7 @@ router.get('/', optionalAuth, async (req, res) => {
     console.error('Error fetching community posts:', err)
     res.status(500).json({ error: 'Failed to fetch community posts' })
   }
-}
+})
 
 // POST /api/community - Create a new community post (authenticated)
 router.post('/', authenticateToken, async (req, res) => {
