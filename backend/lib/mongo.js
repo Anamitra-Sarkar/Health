@@ -19,6 +19,9 @@ async function getDb() {
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000,
       socketTimeoutMS: 5000,
+      tls: true,
+      tlsMinVersion: 'TLSv1.2',
+      retryWrites: true,
     })
     await client.connect()
     const db = client.db(dbName)
