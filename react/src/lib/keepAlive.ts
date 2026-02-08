@@ -2,13 +2,14 @@
  * Keep-alive utility for waking up Render free tier backend
  * Pings backend on app load and navigation to prevent cold starts
  * Render free tier spins down after 15 minutes of inactivity
+ * Pinging every 2 minutes ensures server stays warm
  */
 
 const BACKEND_URL = import.meta.env.VITE_API_URL || ''
 const HEALTH_ENDPOINT = '/health'
 
 let lastPingTime = 0
-const MIN_PING_INTERVAL = 5 * 60 * 1000 // 5 minutes
+const MIN_PING_INTERVAL = 2 * 60 * 1000 // 2 minutes (changed from 5 minutes to prevent Render spindown)
 
 /**
  * Ping the backend health endpoint to keep it awake

@@ -11,7 +11,12 @@ function authenticateToken(req, res, next) {
   if (!token) return res.status(401).json({ error: 'No token provided' })
   
   const jwt = require('jsonwebtoken')
-  const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
+  const JWT_SECRET = process.env.JWT_SECRET
+  
+  if (!JWT_SECRET) {
+    console.error('JWT_SECRET not configured')
+    return res.status(500).json({ error: 'Server configuration error' })
+  }
   
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' })

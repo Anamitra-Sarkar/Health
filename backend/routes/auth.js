@@ -5,7 +5,13 @@ const { findByEmail, findById, createUser } = require('../lib/userStore')
 const getDb = require('../lib/mongo')
 
 const router = express.Router()
-const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
+
+// JWT_SECRET is required - application will fail if not set
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set. Application cannot start securely.')
+  process.exit(1)
+}
+const JWT_SECRET = process.env.JWT_SECRET
 
 function signToken(user) {
   return jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' })
@@ -384,7 +390,7 @@ router.post('/reset-password', async (req, res) => {
       { $set: { passwordHash, updatedAt: new Date() } }
     )
 
-    // markk OTP as used
+    // mark OTP as used
     await db.collection('password_resets').updateOne(
       { _id: resetRequest._id },
       { $set: { used: true, usedAt: new Date() } }

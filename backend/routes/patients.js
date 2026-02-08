@@ -4,7 +4,12 @@ const getDb = require('../lib/mongo')
 const { ObjectId } = require('mongodb')
 const { v4: uuidv4 } = require('uuid')
 const router = express.Router()
-const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
+
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set')
+  process.exit(1)
+}
+const JWT_SECRET = process.env.JWT_SECRET
 
 // In-memory patient store (fallback when MongoDB is unavailable)
 const patientsMap = (globalThis).__HS_PATIENTS ||= new Map()
