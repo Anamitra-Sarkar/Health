@@ -4,8 +4,18 @@ const jwt = require('jsonwebtoken')
 const { findByEmail, findById, createUser } = require('../lib/userStore')
 const getDb = require('../lib/mongo')
 const { getFirebaseAuth } = require('../lib/firebase')
+const rateLimit = require('express-rate-limit')
 
 const router = express.Router()
+
+// Rate limiter for auth endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30, // limit each IP to 30 auth requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many authentication attempts, please try again later.' }
+})
 
 // JWT_SECRET is required - application will fail if not set
 if (!process.env.JWT_SECRET) {
@@ -96,7 +106,7 @@ router.post('/signup', async (req, res) => {
 
 // Firebase Authentication - verify Firebase ID token and issue JWT
 // This endpoint handles both login and signup via Firebase
-router.post('/firebase', async (req, res) => {
+router.post('/firebase', authLimiter, async (req, res) => {
   try {
     const { idToken, role = 'doctor', profile = {}, isSignup = false } = req.body || {}
     if (!idToken) return res.status(400).json({ error: 'Firebase ID token required' })
