@@ -109,6 +109,7 @@ app.set('userSockets', userSockets)
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3000',
+  'http://localhost:4173', // Vite preview port
   'http://localhost:5173', // Vite default dev port
 ]
 
