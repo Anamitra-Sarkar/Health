@@ -36,10 +36,16 @@ const defaultOrigins = [
 ]
 
 // Parse FRONTEND_URLS from environment (comma-separated list)
+// Handles edge cases: trailing commas, multiple commas, whitespace
 const envOrigins = (process.env.FRONTEND_URLS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean)
+
+// Validate and warn about malformed FRONTEND_URLS
+if (process.env.FRONTEND_URLS && envOrigins.length === 0) {
+  console.warn('Warning: FRONTEND_URLS is set but no valid origins found. Check for formatting issues.')
+}
 
 // Merge environment origins with defaults (deduplicated via Set)
 const allowedOrigins = new Set([...envOrigins, ...defaultOrigins])
