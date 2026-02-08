@@ -1,8 +1,7 @@
 const path = require('path')
 
-const app = require(path.join(__dirname, '..', 'backend', 'index.js'))
+// Import the Express app from backend
+const { app } = require(path.join(__dirname, '..', 'backend', 'index.js'))
 
-module.exports = (req, res) => {
-  // Ensure the request stays unmodified and let Express handle routing
-  return app(req, res)
-}
+// Export the Express app for Vercel serverless functions
+module.exports = app

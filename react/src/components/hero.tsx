@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "./ui/button"
-import { Users, MessageCircle, BookOpen, Shield, Search, ChevronUp, ChevronDown, Heart, Activity, Stethoscope, Pill, Syringe, Thermometer, HeartPulse, Cross, Hospital, Droplet, Brain, Eye, Bone, Ambulance, Clipboard, FileHeart } from "lucide-react"
+import { Users, MessageCircle, BookOpen, Shield, Heart, Activity, Stethoscope, Pill, Syringe, Thermometer, HeartPulse, Cross, Hospital, Droplet, Brain, Eye, Bone, Ambulance, Clipboard, FileHeart } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { useRef, useState, useEffect } from "react"
@@ -59,17 +59,17 @@ export function Hero() {
   const [, setIsMobile] = useState(false)
 
   // State for ICD-11 API data and UI states
-  const [query, setQuery] = useState("")
+  const [query, _setQuery] = useState("")
   const [diseaseCatalog, setDiseaseCatalog] = useState<Array<any>>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [_loading, setLoading] = useState(false)
+  const [_error, setError] = useState<string | null>(null)
 
-  const [selected, setSelected] = useState<any | null>(null)
-  const [saved, setSaved] = useState<Array<any>>([])
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+  const [_selected, _setSelected] = useState<any | null>(null)
+  const [_saved, _setSaved] = useState<Array<any>>([])
+  const [_highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   // const [showList, setShowList] = useState(false)
-  const [sending, setSending] = useState(false)
-  const [sendLog, setSendLog] = useState<string | null>(null)
+  const [_sending, _setSending] = useState(false)
+  const [_sendLog, _setSendLog] = useState<string | null>(null)
 
   // Detect mobile screens
   useEffect(() => {
@@ -142,51 +142,52 @@ export function Hero() {
     setHighlightedIndex(filtered.length > 0 ? 0 : -1)
   }, [filtered.length])
 
-  const listboxId = 'icd-listbox'
+  // const _listboxId = 'icd-listbox'
 
-  const [canScrollUpResults, setCanScrollUpResults] = useState(false)
-  const [canScrollDownResults, setCanScrollDownResults] = useState(false)
+  // const [_canScrollUpResults, setCanScrollUpResults] = useState(false)
+  // const [_canScrollDownResults, setCanScrollDownResults] = useState(false)
   const resultsScrollRef = useRef<HTMLDivElement | null>(null)
 
-  const handleResultsScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const element = e.currentTarget
-    setCanScrollUpResults(element.scrollTop > 5)
-    setCanScrollDownResults(
-      element.scrollTop < element.scrollHeight - element.clientHeight - 5
-    )
-  }
+  // const _handleResultsScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  //   const element = e.currentTarget
+  //   setCanScrollUpResults(element.scrollTop > 5)
+  //   setCanScrollDownResults(
+  //     element.scrollTop < element.scrollHeight - element.clientHeight - 5
+  //   )
+  // }
 
   useEffect(() => {
     // Check if results need scroll indicators on mount/update
     if (resultsScrollRef.current && filtered.length > 0) {
-      const el = resultsScrollRef.current
-      setTimeout(() => {
-        setCanScrollDownResults(el.scrollHeight > el.clientHeight)
-      }, 100)
+      // const el = resultsScrollRef.current
+      // setTimeout(() => {
+      //   setCanScrollDownResults(el.scrollHeight > el.clientHeight)
+      // }, 100)
     }
   }, [filtered.length])
 
-  const onInputKeyDown = (e: any) => {
-    if (filtered.length === 0) return
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setHighlightedIndex((i) => Math.min(i + 1, filtered.length - 1))
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setHighlightedIndex((i) => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter') {
-      e.preventDefault()
-      if (highlightedIndex >= 0 && highlightedIndex < filtered.length) {
-        const sel = filtered[highlightedIndex]
-        setSelected(sel)
-        setHighlightedIndex(-1)
-        setQuery('')
-      }
-    } else if (e.key === 'Escape') {
-      e.preventDefault()
-      setHighlightedIndex(-1)
-    }
-  }
+  // Unused function - kept for future use
+  // const _onInputKeyDown = (e: any) => {
+  //   if (filtered.length === 0) return
+  //   if (e.key === 'ArrowDown') {
+  //     e.preventDefault()
+  //     setHighlightedIndex((i) => Math.min(i + 1, filtered.length - 1))
+  //   } else if (e.key === 'ArrowUp') {
+  //     e.preventDefault()
+  //     setHighlightedIndex((i) => Math.max(i - 1, 0))
+  //   } else if (e.key === 'Enter') {
+  //     e.preventDefault()
+  //     if (highlightedIndex >= 0 && highlightedIndex < filtered.length) {
+  //       const sel = filtered[highlightedIndex]
+  //       setSelected(sel)
+  //       setHighlightedIndex(-1)
+  //       setQuery('')
+  //     }
+  //   } else if (e.key === 'Escape') {
+  //     e.preventDefault()
+  //     setHighlightedIndex(-1)
+  //   }
+  // }
 
   // function convertToFHIR(diagnosis: any) {
   //   const fhir = {
@@ -206,26 +207,28 @@ export function Hero() {
   //   return fhir
   // }
 
-  async function handleSave() {
-    if (!selected) return
-    setSaved((s) => {
-      if (s.find((it) => it.id === selected.id)) return s
-      return [...s, selected]
-    })
-  }
+  // Unused function - kept for future use
+  // async function _handleSave() {
+  //   if (!selected) return
+  //   setSaved((s) => {
+  //     if (s.find((it) => it.id === selected.id)) return s
+  //     return [...s, selected]
+  //   })
+  // }
 
-  async function handleMockSend() {
-    if (!selected) return
-    setSending(true)
-    setSendLog(null)
+  // Unused function - kept for future use
+  // async function _handleMockSend() {
+  //   if (!selected) return
+  //   setSending(true)
+  //   setSendLog(null)
 
-    await new Promise((r) => setTimeout(r, 700))
-    setSending(false)
-    setSendLog('Navigating to ICD-11 dashboard...')
+  //   await new Promise((r) => setTimeout(r, 700))
+  //   setSending(false)
+  //   setSendLog('Navigating to ICD-11 dashboard...')
     
-    // Navigate to dashboard/icd11 page
-    window.location.href = '/dashboard/icd11'
-  }
+  //   // Navigate to dashboard/icd11 page
+  //   window.location.href = '/dashboard/icd11'
+  // }
 
 
   // Mobile animation ranges and spring configs as before (omitted here for brevity)

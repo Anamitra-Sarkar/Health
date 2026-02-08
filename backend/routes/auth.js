@@ -5,7 +5,13 @@ const { findByEmail, findById, createUser } = require('../lib/userStore')
 const getDb = require('../lib/mongo')
 
 const router = express.Router()
-const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret'
+
+// JWT_SECRET is required - application will fail if not set
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set. Application cannot start securely.')
+  process.exit(1)
+}
+const JWT_SECRET = process.env.JWT_SECRET
 
 function signToken(user) {
   return jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' })
@@ -35,6 +41,20 @@ router.post('/signup', async (req, res) => {
     const body = req.body || {}
     const { email, password, role = 'doctor', profile = {} } = body
     if (!email || !password) return res.status(400).json({ error: 'email and password required' })
+
+    // Password validation
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters long' })
+    }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ error: 'Password must contain at least one uppercase letter' })
+    }
+    if (!/[a-z]/.test(password)) {
+      return res.status(400).json({ error: 'Password must contain at least one lowercase letter' })
+    }
+    if (!/[0-9]/.test(password)) {
+      return res.status(400).json({ error: 'Password must contain at least one number' })
+    }
 
     const existing = await findByEmail(email)
     if (existing) return res.status(409).json({ error: 'user already exists' })
@@ -384,7 +404,7 @@ router.post('/reset-password', async (req, res) => {
       { $set: { passwordHash, updatedAt: new Date() } }
     )
 
-    // markk OTP as used
+    // mark OTP as used
     await db.collection('password_resets').updateOne(
       { _id: resetRequest._id },
       { $set: { used: true, usedAt: new Date() } }
