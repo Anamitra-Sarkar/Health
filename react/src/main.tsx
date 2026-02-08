@@ -20,16 +20,13 @@ import './index.css'
 import { useAuth } from '@/lib/auth'
 import About from './components/pages/about'
 
-
-// Wake up Render backend on initial page load
-wakeUpOnPageLoad()
-
-// Component to wake backend on route changes
+// Component to wake backend on initial load and route changes
 function NavigationWatcher() {
   const location = useLocation()
   
   useEffect(() => {
-    // Wake backend on every route change
+    // Wake backend on initial load and route changes
+    // Throttling inside wakeUpOnPageLoad prevents excessive requests
     wakeUpOnPageLoad()
   }, [location.pathname])
   

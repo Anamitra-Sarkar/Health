@@ -17,7 +17,6 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
     if (!token) {
       // No token, disconnect if connected
       if (socket) {
-        console.log('Disconnecting socket due to no token')
         socket.disconnect()
         setSocket(null)
         setIsConnected(false)
@@ -28,8 +27,6 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
     // Connect to Socket.IO server with authentication
     // Use Render backend for Socket.IO, separate from Vercel API
     const SOCKET_URL = SOCKET_BASE_URL
-    
-    console.log('Connecting to Socket.IO at:', SOCKET_URL)
     
     const newSocket = io(SOCKET_URL, {
       auth: {
@@ -46,8 +43,8 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
       setIsConnected(true)
     })
 
-    newSocket.on('connected', (data) => {
-      console.log('Server connected message:', data.message)
+    newSocket.on('connected', () => {
+      // Server connected successfully
     })
 
     newSocket.on('disconnect', () => {
@@ -63,7 +60,6 @@ export const SocketProvider = ({ children, token }: SocketProviderProps) => {
     // Cleanup on unmount or when token changes
     return () => {
       if (newSocket) {
-        console.log('Cleaning up socket connection')
         newSocket.disconnect()
       }
     }
